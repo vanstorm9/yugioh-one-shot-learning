@@ -73,6 +73,9 @@ The card dataset was retrieved from an API. The full size version of the cards w
 
 https://db.ygoprodeck.com/api-guide/
 
+You can also download the dataset and trained model here as well:
+https://drive.google.com/drive/folders/1JZCt7hHf4NYgEp2XiE1SpNboAbgBxwDY?usp=sharing
+
 # **__Current improvements to be made__**
 
 The dataset used for training were official card art images used from ygoprodeck (dataset A) and not real life photos of cards in the wild / pictures of cards taken by a camera (dataset B). 

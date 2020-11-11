@@ -49,6 +49,7 @@ _______________________________________________________________
 The AI / machine learning model was tested on real photos of cards (cards with and without sleeves)
 
 ![GitHub Logo](/images/4.png)
+
 Left card has card sleeve, right one is without
 
 These types of images are what I ultimately want my AI classifer to be successful on: having a camera point down on your card and be able to recognize it.

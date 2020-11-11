@@ -14,6 +14,7 @@ _______________________________________________________________
 Here are some results of it:
 
 ![GitHub Logo](/images/0.png)
+
 Real life Yugioh card photos recognized by AI (with or without sleeves)
 _______________________________________________________________
 
@@ -32,12 +33,15 @@ Sample comparison (rank 0 is the most confident prediction):
 The closer the dissimilarity is to 0, the more similar an image is with another
 
 ![GitHub Logo](/images/1.png)
+
 Comparing similarity of input image with database of cards. Left is input image while right are card arts from database.
 
 ![GitHub Logo](/images/2.png)
+
 Even if input image (left) was under very dark conditions, Dark Magician still gets recognized.
 
 ![GitHub Logo](/images/3.png)
+
 Blue Eyes White Dragon gets recognized even with different lighting conditions
 
 _______________________________________________________________

@@ -48,18 +48,10 @@ A simple class to manage configuration
 """
 
 class Config():
-    #training_dir = "./data/cards_old/training/"
-    #testing_dir = "./data/cards_old/testing/"
-    
-    #training_dir = "./data/cards/training/"
-    #testing_dir = "./data/cards/testing/"
-    
     training_dir = "./cardDatabase/"
     testing_dir = "./cardDatabase/"
-    #testing_dir = "./data/cards_old/testing/"
     
     train_batch_size = 24
-    #train_batch_size = 8
     train_number_epochs = 120
 
 """## Custom Dataset Class
@@ -105,8 +97,6 @@ class SiameseNetworkDataset(Dataset):
         
         
         # Crop the card art
-        #img0 = img0[int(0.2*height):int(0.7*height),int(0.2*width):int(0.8*width)]
-        #img1 = img1[int(0.2*height):int(0.7*height),int(0.2*width):int(0.8*width)]
         img0 = img0.crop((int(0.2*width), int(0.2*height), int(0.8*width), int(0.7*height))) 
         img1 = img1.crop((int(0.2*width), int(0.2*height), int(0.8*width), int(0.7*height))) 
         img2 = img2.crop((int(0.2*width), int(0.2*height), int(0.8*width), int(0.7*height))) 
@@ -126,8 +116,6 @@ class SiameseNetworkDataset(Dataset):
             img1 = self.transform(img1)
             img2 = self.transform(img2)
         
-        #return img0, img1 , torch.from_numpy(np.array([int(img1_tuple[1]!=img0_tuple[1])],dtype=np.float32))
-
         # anchor, positive image, negative image
         return img0, img1 , img2, pathList
 
@@ -155,7 +143,6 @@ class ImgAugTransform:
         img = np.array(img)
         return self.aug.augment_image(img)
 
-# https://colab.research.google.com/drive/109vu3F1LTzD1gdVV6cho9fKGx7lzbFll#scrollTo=aUpukiy8sBKx
 siamese_dataset = SiameseNetworkDataset(imageFolderDataset=folder_dataset,
                                         transform=transforms.Compose([
                                                     transforms.Grayscale(num_output_channels=3),
@@ -186,20 +173,10 @@ class SiameseNetwork(nn.Module):
         super(SiameseNetwork, self).__init__()
 
 
-        #self.resnet = models.resnet152(pretrained=True)
         self.resnet = models.resnet101(pretrained=True)
-        #self.resnet = models.resnet50(pretrained=True)
 
-        #self.resnet = torch.nn.Sequential(*(list(self.resnet.children())[:-1]))
 
     def forward_once(self, x):
-        '''
-        output = self.cnn1(x)
-        output = output.view(output.size()[0], -1)
-        output = self.fc1(output)
-        #print(output.shape)
-        #print(output)
-        '''
         #begin = time()
         output = self.resnet(x)
         #print('Time for forward prop: ', time()-begin)
@@ -268,12 +245,7 @@ train_dataloader = DataLoader(siamese_dataset,
                         num_workers=0,
                         batch_size=Config.train_batch_size)
 
-#net = SiameseNetwork_old().cuda()
-#net = SiameseNetwork_old()
 net = SiameseNetwork().cuda()
-#net = SiameseNetwork()
-#net = SiameseNetwork(Bottleneck, [3,4,23,3])
-#criterion = ContrastiveLoss()
 margin = 2.
 criterion = TripletLoss(margin)
 
@@ -282,18 +254,10 @@ optimizer = optim.Adam(net.parameters(),lr = 0.0005 )
 net = nn.DataParallel(net,device_ids=[0,1,2,3])
 
 
-# If we are loading instead
-#loadPath = './savedModels/yugioh-cropped-model.pth'
-#loadPath = './res-yugioh.pth'
-#loadPath = './savedModels/triplet-normalArch-thousandData-noSheer-batch64-0-res.pth'
-#loadPath = './savedModels/triplet-normalArch-thousandData-withSheer-batch16-0-res.pth'
-#loadPath = './res-resnet101-e300-b24-withRotate.pth'
-
 loadPath = './res-resnet101-e245-b24.pth'
 dictPath = 'featureMap-combined.pkl'
 
 
-#net.load_state_dict(torch.load(loadPath,map_location=torch.device('cpu')))
 net.load_state_dict(torch.load(loadPath))
 
 
@@ -407,8 +371,6 @@ output1,output2,output3 = net(Variable(img0).cuda(),Variable(img0).cuda(),Variab
 cardName = tmpPath0.split('/')[-2]
 name,output2 = featureMapDict[cardName]
 
-#concatenated = torch.cat((output1,output2),0)
-#imshow(torchvision.utils.make_grid(concatenated),'Dissimilarity: {:.2f}'.format(score))
 
 print(tmpPath0)
 print(loadPath)

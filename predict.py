@@ -18,7 +18,6 @@ import torch.nn.functional as F
 import cv2
 from matplotlib import pyplot as plt
 import os
-#from torchsummary import summary
 
 from time import time
 import random
@@ -36,27 +35,14 @@ enableEval = False
 targetDirName = './cardDatabaseFull/'
 assert os.path.exists(targetDirName)
 
-#loadPath = './res-5.pth'
-#loadPath = 'resShiftEasy-resnet101-e300-b24.pth'
 loadPath = './savedModels/res-withShift-150-072020.pth'
 
-
-#loadPath = './res-300-withShift-072320-3.pth'
-
-#loadPath = 'tmp.pth'
 
 assert os.path.exists(loadPath)
 
 
-#dictPath = 'featureMap-resShiftEasy-res101-e300-b24.pkl'
-#dictPath = 'featureMap-combined.pkl'
 dictPath = './savedModels/featureMap-withShift-150-072020.pkl'
 
-#dictPath = 'featureMap-resShiftEasy-res101-e300-b24-eval.pkl'
-
-#dictPath = 'featureMap-res-resShiftI-e300-b24.pkl'
-#dictPath = 'featureMap-5.pkl'
-#dictPath = 'featureMap-resL-resnet101-e245-b24-lte.pkl'
 assert os.path.exists(dictPath)
 
 
@@ -150,18 +136,11 @@ A simple class to manage configuration
 """
 
 class Config():
-    #training_dir = "./data/cards_old/training/"
-    #testing_dir = "./data/cards_old/testing/"
-    
-    #training_dir = "./data/cards/training/"
-    #testing_dir = "./data/cards/testing/"
     
     training_dir = "./cardDatabaseFull/"
     testing_dir = "./cardDatabaseFull/"
-    #testing_dir = "./data/cards_old/testing/"
     
     train_batch_size = 24
-    #train_batch_size = 8
     train_number_epochs = 120
 
 """## Custom Dataset Class
@@ -267,12 +246,7 @@ class TripletLoss(nn.Module):
         return losses.mean() if size_average else losses.sum()
 
 """## Training Time!"""
-#net = SiameseNetwork_old().cuda()
-#net = SiameseNetwork_old()
 net = SiameseNetwork().cuda()
-#net = SiameseNetwork()
-#net = SiameseNetwork(Bottleneck, [3,4,23,3])
-#criterion = ContrastiveLoss()
 margin = 2.
 criterion = TripletLoss(margin)
 
@@ -289,7 +263,6 @@ net = nn.DataParallel(net,device_ids=[0,1,2,3])
 
 
 
-#net.load_state_dict(torch.load(loadPath,map_location=torch.device('cpu')))
 net.load_state_dict(torch.load(loadPath))
 
 

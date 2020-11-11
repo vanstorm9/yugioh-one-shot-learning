@@ -48,15 +48,9 @@ A simple class to manage configuration
 """
 
 class Config():
-    #training_dir = "./data/cards_old/training/"
-    #testing_dir = "./data/cards_old/testing/"
-    
-    #training_dir = "./data/cards/training/"
-    #testing_dir = "./data/cards/testing/"
     
     training_dir = "./cardDatabase/"
     testing_dir = "./cardDatabase/"
-    #testing_dir = "./data/cards_old/testing/"
     
     train_batch_size = 24
     #train_batch_size = 8
@@ -105,8 +99,6 @@ class SiameseNetworkDataset(Dataset):
         
         
         # Crop the card art
-        #img0 = img0[int(0.2*height):int(0.7*height),int(0.2*width):int(0.8*width)]
-        #img1 = img1[int(0.2*height):int(0.7*height),int(0.2*width):int(0.8*width)]
         img0 = img0.crop((int(0.2*width), int(0.2*height), int(0.8*width), int(0.7*height))) 
         img1 = img1.crop((int(0.2*width), int(0.2*height), int(0.8*width), int(0.7*height))) 
         img2 = img2.crop((int(0.2*width), int(0.2*height), int(0.8*width), int(0.7*height))) 
@@ -126,7 +118,6 @@ class SiameseNetworkDataset(Dataset):
             img1 = self.transform(img1)
             img2 = self.transform(img2)
         
-        #return img0, img1 , torch.from_numpy(np.array([int(img1_tuple[1]!=img0_tuple[1])],dtype=np.float32))
 
         # anchor, positive image, negative image
         return img0, img1 , img2, pathList
@@ -186,20 +177,9 @@ class SiameseNetwork(nn.Module):
         super(SiameseNetwork, self).__init__()
 
 
-        #self.resnet = models.resnet152(pretrained=True)
         self.resnet = models.resnet101(pretrained=True)
-        #self.resnet = models.resnet50(pretrained=True)
-
-        #self.resnet = torch.nn.Sequential(*(list(self.resnet.children())[:-1]))
 
     def forward_once(self, x):
-        '''
-        output = self.cnn1(x)
-        output = output.view(output.size()[0], -1)
-        output = self.fc1(output)
-        #print(output.shape)
-        #print(output)
-        '''
         #begin = time()
         output = self.resnet(x)
         #print('Time for forward prop: ', time()-begin)
@@ -209,8 +189,6 @@ class SiameseNetwork(nn.Module):
 
     def forward(self, input1, input2, input3):
         output1 = self.forward_once(input1)
-        #output2 = self.forward_once(input2)
-        #output3 = self.forward_once(input3)
         output2 = None
         output3  = None
 
@@ -268,12 +246,7 @@ train_dataloader = DataLoader(siamese_dataset,
                         num_workers=0,
                         batch_size=Config.train_batch_size)
 
-#net = SiameseNetwork_old().cuda()
-#net = SiameseNetwork_old()
 net = SiameseNetwork().cuda()
-#net = SiameseNetwork()
-#net = SiameseNetwork(Bottleneck, [3,4,23,3])
-#criterion = ContrastiveLoss()
 margin = 2.
 criterion = TripletLoss(margin)
 
@@ -283,11 +256,6 @@ net = nn.DataParallel(net,device_ids=[0,1,2,3])
 
 
 # If we are loading instead
-#loadPath = './savedModels/yugioh-cropped-model.pth'
-#loadPath = './res-yugioh.pth'
-#loadPath = './savedModels/triplet-normalArch-thousandData-noSheer-batch64-0-res.pth'
-#loadPath = './savedModels/triplet-normalArch-thousandData-withSheer-batch16-0-res.pth'
-#loadPath = './res-resnet101-e300-b24-withRotate.pth'
 loadPath = './res-resnet101-e245-b24.pth'
 
 #net.load_state_dict(torch.load(loadPath,map_location=torch.device('cpu')))

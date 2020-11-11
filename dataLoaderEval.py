@@ -35,13 +35,8 @@ enableEval = False
 targetDirName = './cardDatabaseFull/'
 assert os.path.exists(targetDirName)
 
-#loadPath = './res-300-withShift-072320-3.pth'
 loadPath = './res-withShift-150-072020.pth'
 
-
-#loadPath = './res-withShift-150-072020.pth'
-#loadPath = 'resShiftEasy-resnet101-e300-b24.pth'
-#loadPath = 'res-withShift-150-072020.pth'
 assert os.path.exists(loadPath)
 
 dim=(255,255)
@@ -70,15 +65,9 @@ A simple class to manage configuration
 """
 
 class Config():
-    #training_dir = "./data/cards_old/training/"
-    #testing_dir = "./data/cards_old/testing/"
-    
-    #training_dir = "./data/cards/training/"
-    #testing_dir = "./data/cards/testing/"
     
     training_dir = "./cardDatabaseFull/"
     testing_dir = "./cardDatabaseFull/"
-    #testing_dir = "./data/cards_old/testing/"
     
     train_batch_size = 24
     #train_batch_size = 8
@@ -127,8 +116,6 @@ class SiameseNetworkDataset(Dataset):
         
         
         # Crop the card art
-        #img0 = img0[int(0.2*height):int(0.7*height),int(0.2*width):int(0.8*width)]
-        #img1 = img1[int(0.2*height):int(0.7*height),int(0.2*width):int(0.8*width)]
         img0 = img0.crop((int(0.2*width), int(0.2*height), int(0.8*width), int(0.7*height))) 
         img1 = img1.crop((int(0.2*width), int(0.2*height), int(0.8*width), int(0.7*height))) 
         img2 = img2.crop((int(0.2*width), int(0.2*height), int(0.8*width), int(0.7*height))) 
@@ -148,7 +135,6 @@ class SiameseNetworkDataset(Dataset):
             img1 = self.transform(img1)
             img2 = self.transform(img2)
         
-        #return img0, img1 , torch.from_numpy(np.array([int(img1_tuple[1]!=img0_tuple[1])],dtype=np.float32))
 
         # anchor, positive image, negative image
         return img0, img1 , img2, pathList
@@ -176,37 +162,7 @@ class ImgAugTransform:
     def __call__(self, img):
         img = np.array(img)
         return self.aug.augment_image(img)
-'''
-# https://colab.research.google.com/drive/109vu3F1LTzD1gdVV6cho9fKGx7lzbFll#scrollTo=aUpukiy8sBKx
-siamese_dataset = SiameseNetworkDataset(imageFolderDataset=folder_dataset,
-                                        transform=transforms.Compose([
-                                                    transforms.Grayscale(num_output_channels=3),
-                                                    #transforms.Resize((100,100)),
-                                                    transforms.Resize((244,244)),
-                                                    transforms.ColorJitter(brightness=(0.5,1.5),contrast=(0.3,2.0),hue=.05, saturation=(.0,.15)),
-                                                    #transforms.RandomHorizontalFlip(),
-                                                    #transforms.RandomRotation(10,fill=(0,)),
-                                                    
-                                                    transforms.RandomAffine(0, translate=(0,0.3), scale=(0.6,1.8), shear=(0.0,0.4), resample=False, fillcolor=0),
-                                                    transforms.ToTensor()
-                                                ])
-                                       ,should_invert=False)
-'''
-'''
-siamese_dataset = SiameseNetworkDataset(imageFolderDataset=folder_dataset,
-                                        transform=transforms.Compose([
-                                                    transforms.Grayscale(num_output_channels=3),
-                                                    #transforms.Resize((100,100)),
-                                                    transforms.Resize((244,244)),
-                                                    transforms.ColorJitter(brightness=(0.4,0.9),contrast=(0.1,2.0),hue=.05, saturation=(.0,.15)),
-                                                    #transforms.RandomHorizontalFlip(),
-                                                    #transforms.RandomRotation(10),
-                                                    
-                                                    transforms.RandomAffine(0, translate=(0.2,0.2), scale=None, shear=(0.2,0.2), resample=False, fillcolor=(0,0,0)),
-                                                    transforms.ToTensor()
-                                                    #transforms.Normalize([0.485, 0.456, 0.406],[0.229, 0.224, 0.225])
-                                                ]),should_invert=False)
-'''
+
 siamese_dataset = SiameseNetworkDataset(imageFolderDataset=folder_dataset,
                                         transform=transforms.Compose([
                                                     transforms.Grayscale(num_output_channels=3),
@@ -225,30 +181,14 @@ class SiameseNetwork(nn.Module):
     def __init__(self):
         super(SiameseNetwork, self).__init__()
 
-
-        #self.resnet = models.resnet152(pretrained=True)
-        #self.resnet = models.resnet101(pretrained=True)
-
         self.resnet = mod_res.resnet101(filter_size=3)
 
         if enableEval:
             self.resnet.load_state_dict(torch.load('./pretrainedWeights/resnet101_lpf3.pth.tar')['state_dict'])
 
         
-        
-
-        #self.resnet = models.resnet50(pretrained=True)
-
-        #self.resnet = torch.nn.Sequential(*(list(self.resnet.children())[:-1]))
 
     def forward_once(self, x):
-        '''
-        output = self.cnn1(x)
-        output = output.view(output.size()[0], -1)
-        output = self.fc1(output)
-        #print(output.shape)
-        #print(output)
-        '''
         #begin = time()
         output = self.resnet(x)
         #print('Time for forward prop: ', time()-begin)
@@ -307,14 +247,7 @@ class TripletLoss(nn.Module):
 
         return losses.mean() if size_average else losses.sum()
 
-
-
-#net = SiameseNetwork_old().cuda()
-#net = SiameseNetwork_old()
 net = SiameseNetwork().cuda()
-#net = SiameseNetwork()
-#net = SiameseNetwork(Bottleneck, [3,4,23,3])
-#criterion = ContrastiveLoss()
 margin = 2.
 criterion = TripletLoss(margin)
 
@@ -327,11 +260,6 @@ if enableEval:
 
 net = nn.DataParallel(net,device_ids=[0,1,2,3])
 
-
-
-
-
-#net.load_state_dict(torch.load(loadPath,map_location=torch.device('cpu')))
 net.load_state_dict(torch.load(loadPath))
 
 if enableEval:

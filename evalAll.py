@@ -73,48 +73,12 @@ dim=(255,255)
 
 visualizeResult = True
 
-'''
-tdm_0.png
-tdms_2.png
-
-tw_0.png
-
-/dark-magician/1.jpg
-shifted-dm_0.png
-
-bewd_dd.png
-'''
-
-'''
-# Card Crush Virus
-groundTruthPath = targetDirName + 'Crush-Card-Virus-0-57728570/57728570.jpg'
-imagePath0 = './test-input/ccv_0.png'
-'''
-'''
-# Toon Dark Magician (tdm_0.png fails) (original rank of 1032) (HOG rank of 118)
-groundTruthPath = targetDirName + 'Toon-Dark-Magician-0-21296502/21296502.jpg'
-#imagePath0 = './test-input/tdm_0.png'
-imagePath0 = './test-input/tdms_2.png'
-'''
-
-'''
-# Time Wizard 
-groundTruthPath = targetDirName + 'Time-Wizard-0-71625222/716252222.jpg'
-imagePath0 = './test-input/tw_0.png'
-'''
-
 
 # Dark Magician (still problems with sifted-dm_0.png)
 #imagePath0 = './test-input/dm_0.png'
 groundTruthPath = targetDirName + 'Dark-Magician-0-46986414/469864140.jpg'
 imagePath0 = './data/cards/training/dark-magician/1.jpg'
 #imagePath0 = './test-input/sifted-dm_0.png'
-
-'''
-#imagePath0 = './test-input/bewd_0.png'
-groundTruthPath = targetDirName + 'BlueEyes-White-Dragon-1-89631139/896311391.jpg'
-imagePath0 = './test-input/bewd_dd.png'
-'''
 assert os.path.exists(imagePath0)
 
 

@@ -1,0 +1,35 @@
+
+original model (300) + 150 epochs
+
+25 batches
+
+
+
+Architecture:
+
+Uses:
+	net = SiameseNetwork().cuda()
+	enableEval = False
+        self.resnet = mod_res.resnet101(filter_size=3)
+	
+
+
+
+DOES NOT USE:
+	net.eval()
+        self.resnet.load_state_dict(torch.load('./pretrainedWeights/resnet101_lpf3.pth.tar')['state_dict'])
+	dropoutRate = 0.3
+	net.resnet.fc.register_forward_hook(lambda m, inp, out: F.dropout(out, p=dropoutRate, training=net.training))
+
+
+Image Augmentation Info:
+
+siamese_dataset = SiameseNetworkDataset(imageFolderDataset=folder_dataset,
+                                        transform=transforms.Compose([
+                                                    transforms.Grayscale(num_output_channels=3),
+                                                    transforms.Resize((244,244)),
+                                                    transforms.ColorJitter(brightness=(0.2,1.5),contrast=(0.1,2.5),hue=.05, saturation=(.0,.15)),
+
+                                                    transforms.RandomAffine(0, translate=(0.2,0.2), scale=None, shear=(0.2,0.2), resample=PIL.Image.NEAREST, fillcolor=(0,0,0)),
+                                                    transforms.ToTensor()
+                                                ]),should_invert=False)

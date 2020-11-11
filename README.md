@@ -20,11 +20,15 @@ _______________________________________________________________
 
 # **__Method__**
 
-Here, I will explain some of the methods I used. Traditional machine learning / deep learning methods would not do so well with a massive amount of cards with each one having one or a few art designs, so I ended up using a method known as one-shot learning. One-shot learning is basically just a method to compare two different cards together and calculate how similar they are. One would feed two images (target image and a comparison image) into the same network and calculate the distance between the output feature maps to get a simularity score. The architecture that was used is resnet101 that used triplet loss function to capture features from the card images and use positive / negative anchors to move simular cards closer along with moving different cards further from each other. 
+Here, I will explain some of the methods I used. 
+
+Traditional machine learning / deep learning methods would not do so well with a massive amount of cards with each one having one or a few art designs, so I ended up using a method known as one-shot learning. One-shot learning is basically just a method to compare two different cards together and calculate how similar they are. One would feed two images (target image and a comparison image) into the same network and calculate the distance between the output feature maps to get a simularity score. 
+
+The architecture that was used is resnet101 that used triplet loss function to capture features from the card images and use positive / negative anchors to move simular cards closer along with moving different cards further from each other. Blur pooling was also used in order to help make the network more shift-invariant.
 
 The ORB algorithm is used as a ranking system to deal with "borderline" predictions where the correct card not predicted as rank 0 (1st place), but got relatively close. The number of ORB points are then counted between two compared images and resulting number is used in a weighted formula with the one-shot learning similarity score to get a final score.
 
-One-shot learning generates the first wave of rankings (to work despite lighting / contrast conditions), then ORB is then used to resolve any borderline cases.
+One-shot learning generates the first wave of rankings (to work despite lighting / contrast conditions), then ORB is then used to resolve any borderline cases before outputing its final prediction.
 
 # **__Process__**
 

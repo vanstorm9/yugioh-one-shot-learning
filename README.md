@@ -87,12 +87,12 @@ https://drive.google.com/drive/folders/1JZCt7hHf4NYgEp2XiE1SpNboAbgBxwDY?usp=sha
 
 # **__How to run__**
 
-You can run this script to start the training process.
+You can run this script to start the training process. You can edit parameters and path locations within the script.
 ```
 	python3 train.py
 ```
 
-You can also run this script to preform predictions.
+You can also run this script to preform predictions. You can edit parameters and path locations within the script.
 ```
 	python3 predict.py
 ```

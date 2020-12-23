@@ -14,16 +14,21 @@ _______________________________________________________________
 Here are some results of it:
 
 ![GitHub Logo](/images/0.png)
+
 Real life Yugioh card photos recognized by AI (with or without sleeves)
 _______________________________________________________________
 
 # **__Method__**
 
-Here, I will explain some of the methods I used. Traditional machine learning / deep learning methods would not do so well with a massive amount of cards with each one having one or a few art designs, so I ended up using a method known as one-shot learning. One-shot learning is basically just a method to compare two different cards together and calculate how similar they are. One would feed two images (target image and a comparison image) into the same network and calculate the distance between the output feature maps to get a simularity score. The architecture that was used is resnet101 that used triplet loss function to capture features from the card images and use positive / negative anchors to move simular cards closer along with moving different cards further from each other. 
+Here, I will explain some of the methods I used. 
+
+Traditional machine learning / deep learning methods would not do so well with a massive amount of cards with each one having one or a few art designs, so I ended up using a method known as one-shot learning. One-shot learning is basically just a method to compare two different cards together and calculate how similar they are. One would feed two images (target image and a comparison image) into the same network and calculate the distance between the output feature maps to get a simularity score. 
+
+The architecture that was used is resnet101 that used triplet loss function to capture features from the card images and use positive / negative anchors to move simular cards closer along with moving different cards further from each other. Blur pooling was also used in order to help make the network more shift-invariant.
 
 The ORB algorithm is used as a ranking system to deal with "borderline" predictions where the correct card not predicted as rank 0 (1st place), but got relatively close. The number of ORB points are then counted between two compared images and resulting number is used in a weighted formula with the one-shot learning similarity score to get a final score.
 
-One-shot learning generates the first wave of rankings (to work despite lighting / contrast conditions), then ORB is then used to resolve any borderline cases.
+One-shot learning generates the first wave of rankings (to work despite lighting / contrast conditions), then ORB is then used to resolve any borderline cases before outputing its final prediction.
 
 # **__Process__**
 
@@ -32,12 +37,15 @@ Sample comparison (rank 0 is the most confident prediction):
 The closer the dissimilarity is to 0, the more similar an image is with another
 
 ![GitHub Logo](/images/1.png)
+
 Comparing similarity of input image with database of cards. Left is input image while right are card arts from database.
 
 ![GitHub Logo](/images/2.png)
+
 Even if input image (left) was under very dark conditions, Dark Magician still gets recognized.
 
 ![GitHub Logo](/images/3.png)
+
 Blue Eyes White Dragon gets recognized even with different lighting conditions
 
 _______________________________________________________________
@@ -45,6 +53,7 @@ _______________________________________________________________
 The AI / machine learning model was tested on real photos of cards (cards with and without sleeves)
 
 ![GitHub Logo](/images/4.png)
+
 Left card has card sleeve, right one is without
 
 These types of images are what I ultimately want my AI classifer to be successful on: having a camera point down on your card and be able to recognize it.
@@ -72,6 +81,9 @@ This was meant to be a quick project, so I am happy with progress that was made.
 The card dataset was retrieved from an API. The full size version of the cards were used:
 
 https://db.ygoprodeck.com/api-guide/
+
+You can also download the dataset and trained model here as well:
+https://drive.google.com/drive/folders/1JZCt7hHf4NYgEp2XiE1SpNboAbgBxwDY?usp=sharing
 
 # **__Current improvements to be made__**
 

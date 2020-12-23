@@ -85,7 +85,7 @@ https://db.ygoprodeck.com/api-guide/
 You can also download the dataset and trained model here as well:
 https://drive.google.com/drive/folders/1JZCt7hHf4NYgEp2XiE1SpNboAbgBxwDY?usp=sharing
 
-# **__How to run__ **
+# **__How to run__**
 
 You can run this script to start the training process.
 ```

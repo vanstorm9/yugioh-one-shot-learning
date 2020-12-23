@@ -85,6 +85,19 @@ https://db.ygoprodeck.com/api-guide/
 You can also download the dataset and trained model here as well:
 https://drive.google.com/drive/folders/1JZCt7hHf4NYgEp2XiE1SpNboAbgBxwDY?usp=sharing
 
+# **__How to run__ **
+
+You can run this script to start the training process.
+```
+	python3 train.py
+```
+
+You can also run this script to preform predictions.
+```
+	python3 predict.py
+```
+
+
 # **__Current improvements to be made__**
 
 The dataset used for training were official card art images used from ygoprodeck (dataset A) and not real life photos of cards in the wild / pictures of cards taken by a camera (dataset B). 

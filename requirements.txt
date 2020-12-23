@@ -1,6 +1,6 @@
 torch==1.7.0
 torchvision==0.5.0
-opencv=4.2.0
-pickle==4.0
+opencv-python==4.2.0.32
+pickle-mixin
 Pillow==7.0.0
 

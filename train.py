@@ -56,10 +56,9 @@ class Config():
     
     #training_dir = "./cardDatabase/"
     #testing_dir = "./cardDatabase/"
-    
-    
-    training_dir = "./cardDatabase/"
-    testing_dir = "./cardDatabase/"
+     
+    training_dir = "./cardDatabaseFull/"
+    testing_dir = "./cardDatabaseFull/"
     
     #testing_dir = "./data/cards_old/testing/"
     

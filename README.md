@@ -96,6 +96,8 @@ You can also run this script to preform predictions. You can edit parameters and
 ```
 	python3 predict.py
 ```
+After training, you will have to create a dictionary of feature map activations on the entire card dataset. You can do this by running dictCreate.py, dictTest.py and dictUnify.py in that order (be sure to confirm the path locations within each script).
+
 
 
 # **__Current improvements to be made__**

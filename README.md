@@ -2,8 +2,10 @@
 One shot learning (image recogntion) on 10,856 unique Yugioh cards
 
 Check out either these links for more details about implementation:
-https://towardsdatascience.com/i-made-an-ai-to-recognize-over-10-000-yugioh-cards-26fc6aed1588
-https://www.pyimagesearch.com/2021/03/03/an-interview-with-anthony-lowhur-recognizing-10000-yugioh-cards-with-computer-vision-and-deep-learning/
+
+-   https://towardsdatascience.com/i-made-an-ai-to-recognize-over-10-000-yugioh-cards-26fc6aed1588
+
+-   https://www.pyimagesearch.com/2021/03/03/an-interview-with-anthony-lowhur-recognizing-10000-yugioh-cards-with-computer-vision-and-deep-learning/
 
 
 This is a program that uses deep learning to recognize different cards from among all 10,856 cards in the game. From a dataset 

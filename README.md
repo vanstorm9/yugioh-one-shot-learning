@@ -1,5 +1,11 @@
 # Deep learning Yugioh card classifier
-One shot learning (image recogntion) on 10,856 unique Yugioh cards
+One shot learning (image recogntion) on 10,856 unique Yugioh cards. This deep learning classifier was made in order to make a Yugioh duel disk (you can find more information about it below):
+
+
+Yugioh Duel Disk powered by this deep learning model:
+https://www.reddit.com/r/yugioh/comments/idagc9/i_made_a_functional_duel_disk_powered_by_ai/
+
+_______________________________________________________________
 
 Check out either these links for more details about implementation:
 

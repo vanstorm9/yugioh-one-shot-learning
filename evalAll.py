@@ -353,7 +353,9 @@ criterion = TripletLoss(margin)
 
 optimizer = optim.Adam(net.parameters(),lr = 0.0005 )
 
-net = nn.DataParallel(net,device_ids=[0,1,2,3])
+#net = nn.DataParallel(net,device_ids=[0,1,2,3])
+net = nn.DataParallel(net,device_ids=[0])
+#net = nn.DataParallel(net,device_ids)
 
 
 

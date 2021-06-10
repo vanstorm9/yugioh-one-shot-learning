@@ -103,11 +103,11 @@ imagePath0 = './data/cards/training/dark-magician/0.jpg'
 #imagePath0 = './test-input/sifted-dm_0.png'
 '''
 
-'''
+
 #imagePath0 = './test-input/bewd_0.png'
 groundTruthPath = targetDirName + 'BlueEyes-White-Dragon-1-89631139/896311391.jpg'
 imagePath0 = './test-input/bewd_dd.png'
-'''
+
 assert os.path.exists(imagePath0)
 assert os.path.exists(groundTruthPath)
 
@@ -258,7 +258,8 @@ if enableEval:
     dropoutRate = 0.3
     net.resnet.fc.register_forward_hook(lambda m, inp, out: F.dropout(out, p=dropoutRate, training=net.training))
 '''
-net = nn.DataParallel(net,device_ids=[0,1,2,3])
+#net = nn.DataParallel(net,device_ids=[0,1,2,3])
+net = nn.DataParallel(net,device_ids=[0])
 
 
 

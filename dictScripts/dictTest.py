@@ -295,13 +295,9 @@ def getSimilarRank(imagePath0,imagePath1):
     img1 = expand_img_dim(img1,1)
     img1 = torch.from_numpy(img1).type('torch.FloatTensor')
 
-    # Compare and get similary rank
-    concatenated = torch.cat((img0,img1),0)
-    output1,output2,_ = net(Variable(img0),Variable(img1),Variable(img1))
-    #output1,output2,output3 = net(Variable(img0).cuda(),Variable(img1).cuda(),Variable(img1).cuda())
-    begin = time()
+    with torch.no_grad():
+        output1,output2,_ = net(img0,img1,img1)
     euclidean_distance = F.pairwise_distance(output1, output2)
-    print('Time to compare euclidean distance: ', time()-begin,'s')
     return euclidean_distance, (output1,output2)
 
 def compareNCards(imgPath0,imgPath1,targetDirName,n_compare=10):
@@ -365,7 +361,8 @@ img0 = cv2.resize(img0, dim, interpolation = cv2.INTER_AREA)
 img0 = [img0] * 3
 img0 = expand_img_dim(img0,1)
 img0 = torch.from_numpy(img0).type('torch.FloatTensor')
-output1,output2,output3 = net(Variable(img0).cuda(),Variable(img0).cuda(),Variable(img0).cuda())
+with torch.no_grad():
+    output1,output2,output3 = net(img0.cuda(),img0.cuda(),img0.cuda())
 
 
 cardName = tmpPath0.split('/')[-2]

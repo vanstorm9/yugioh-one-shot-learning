@@ -332,13 +332,9 @@ def getSimilarRank(imagePath0,imagePath1):
     img1 = expand_img_dim(img1,1)
     img1 = torch.from_numpy(img1).type('torch.FloatTensor')
 
-    # Compare and get similary rank
-    concatenated = torch.cat((img0,img1),0)
-    output1,output2,_ = net(Variable(img0),Variable(img1),Variable(img1))
-    #output1,output2,output3 = net(Variable(img0).cuda(),Variable(img1).cuda(),Variable(img1).cuda())
-    begin = time()
+    with torch.no_grad():
+        output1,output2,_ = net(img0,img1,img1)
     euclidean_distance = F.pairwise_distance(output1, output2)
-    print('Time to compare euclidean distance: ', time()-begin,'s')
     return euclidean_distance, (output1,output2)
 
 def compareNCards(imgPath0,imgPath1,targetDirName,n_compare=10):
@@ -410,11 +406,11 @@ def modelDictSyncCheck(searchPath, targetDirName,featureMapDict):
   img0 = expand_img_dim(img0,1)
   img0 = torch.from_numpy(img0).type('torch.FloatTensor')
 
-  if useGPU:
-      output1,_,_ = net(Variable(img0).cuda(),Variable(img0).cuda(),Variable(img0).cuda())
-  else:
-      output1,_,_ = net(Variable(img0),Variable(img0),Variable(img0))
-      #output1,_,_ = net()(Variable(img0),Variable(img0),Variable(img0))
+  with torch.no_grad():
+    if useGPU:
+        output1,_,_ = net(img0.cuda(),img0.cuda(),img0.cuda())
+    else:
+        output1,_,_ = net(img0,img0,img0)
 
   cardNameTemp = searchPath.split('/')[-2]
   name,output2 = featureMapDict[cardNameTemp]
@@ -446,7 +442,7 @@ def imgPathToCVImg(absPath):
 
 def imgPathToTranslateCVImg(absPath,translation_matrix):
   img = cv2.resize(cv2.imread(absPath,0), dim, interpolation = cv2.INTER_AREA)
-  img = cv2.warpAffine(img, translation_matrix, (img1.shape[0],img1.shape[1]))
+  img = cv2.warpAffine(img, translation_matrix, (img.shape[0],img.shape[1]))  # fixed: was img1.shape
   img = imgArtCropper(img)/255.0
   img = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
   return img
@@ -652,9 +648,9 @@ def predictCard(inputImg,orb,predictPrint=True):
   # Get the activation map of the test image
   with torch.no_grad():
       if useGPU:
-          output1,output2,output3 = net(Variable(img0).cuda(),Variable(img0).cuda(),Variable(img0).cuda())
+          output1,output2,output3 = net(img0.cuda(),img0.cuda(),img0.cuda())
       else:
-          output1,output2,output3 = net(Variable(img0),Variable(img0),Variable(img0))
+          output1,output2,output3 = net(img0,img0,img0)
   #output1 = net.forward_once(img0)
 
   print('Single image prediction phase: ',time()-begin,'s')

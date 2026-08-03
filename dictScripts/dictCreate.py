@@ -296,13 +296,9 @@ def getSimilarRank(imagePath0,imagePath1):
     img1 = expand_img_dim(img1,1)
     img1 = torch.from_numpy(img1).type('torch.FloatTensor')
 
-    # Compare and get similary rank
-    concatenated = torch.cat((img0,img1),0)
-    output1,output2,_ = net(Variable(img0),Variable(img1),Variable(img1))
-    #output1,output2,output3 = net(Variable(img0).cuda(),Variable(img1).cuda(),Variable(img1).cuda())
-    begin = time()
+    with torch.no_grad():
+        output1,output2,_ = net(img0,img1,img1)
     euclidean_distance = F.pairwise_distance(output1, output2)
-    print('Time to compare euclidean distance: ', time()-begin,'s')
     return euclidean_distance, (output1,output2)
 
 def compareNCards(imgPath0,imgPath1,targetDirName,n_compare=10):
@@ -371,8 +367,8 @@ for subdir, dirs, files in os.walk(targetDirName):
             #print(imagePath0)
 
 
-            #output1,output2,output3 = net(Variable(img1),Variable(img1),Variable(img1))
-            output1,output2,output3 = net(Variable(img1).cuda(),Variable(img1).cuda(),Variable(img1).cuda())
+            with torch.no_grad():
+                output1,output2,output3 = net(img1.cuda(),img1.cuda(),img1.cuda())
             dirName = subdir.split('/')[-1]
             featureMapList[dirName] = (absFilePath,output1)
             #print(featureMapList.keys())

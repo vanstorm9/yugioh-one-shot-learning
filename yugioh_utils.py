@@ -108,3 +108,57 @@ def calculateHOGpoints(orb, img1, img2):
     bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
     matches = bf.match(descs1, descs2)
     return len(matches)
+
+
+# ---------------------------------------------------------------------------
+# DINOv2 utilities
+# ---------------------------------------------------------------------------
+import torchvision.transforms as T
+from PIL import Image
+
+DINO_DIM = (224, 224)
+_IMAGENET_MEAN = [0.485, 0.456, 0.406]
+_IMAGENET_STD  = [0.229, 0.224, 0.225]
+
+_dino_transform = T.Compose([
+    T.Resize(DINO_DIM),
+    T.ToTensor(),
+    T.Normalize(mean=_IMAGENET_MEAN, std=_IMAGENET_STD),
+])
+
+
+def imgPathToRGBTensor(absPath):
+    """Load image, crop card art, return (1,3,224,224) float tensor for DINOv2."""
+    img = Image.open(absPath).convert("RGB")
+    img = imgArtCropper(img)
+    return _dino_transform(img).unsqueeze(0)
+
+
+class DINOv2Extractor:
+    """Frozen DINOv2-base feature extractor. Returns L2-normalised CLS embeddings."""
+
+    def __init__(self, device=None):
+        from transformers import AutoModel
+        if device is None:
+            device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.device = device
+        self.model = AutoModel.from_pretrained("facebook/dinov2-base")
+        self.model.eval().to(device)
+
+    @torch.no_grad()
+    def extract(self, tensor):
+        """tensor: (B,3,224,224) float — returns (B, 768) numpy float32, L2-normalised."""
+        tensor = tensor.to(self.device)
+        outputs = self.model(pixel_values=tensor)
+        cls = outputs.last_hidden_state[:, 0, :]          # CLS token
+        cls = F.normalize(cls, p=2, dim=1)
+        return cls.cpu().numpy()
+
+    @torch.no_grad()
+    def extract_path(self, absPath):
+        """Convenience: load one image from disk and return (768,) numpy array."""
+        tensor = imgPathToRGBTensor(absPath).to(self.device)
+        outputs = self.model(pixel_values=tensor)
+        cls = outputs.last_hidden_state[:, 0, :]
+        cls = F.normalize(cls, p=2, dim=1)
+        return cls.squeeze(0).cpu().numpy()

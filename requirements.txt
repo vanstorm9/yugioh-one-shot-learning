@@ -1,7 +1,19 @@
-torch==1.7.0
-torchvision==0.8.1
-opencv-python==4.2.0.32
-Pillow>=7.0.0
-numpy>=1.19.0
+# Core deep learning
+torch>=2.0.0
+torchvision>=0.15.0
+
+# DINOv2 backbone
+transformers>=4.38.0
+
+# Vector search
+faiss-cpu>=1.7.4          # swap for faiss-gpu if CUDA available
+
+# LoRA fine-tuning (optional, only needed for finetune_arcface.py)
+peft>=0.10.0
+
+# Image processing
+opencv-python>=4.5.0
+Pillow>=9.0.0
+numpy>=1.23.0
+scikit-image>=0.19.0
 imutils>=0.5.3
-scikit-image>=0.17.0

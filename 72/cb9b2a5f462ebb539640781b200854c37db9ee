@@ -1,0 +1,29 @@
+yugioh_utils.py
+  s_a3385df8540ea7::t_5256a2ac5ccab7 111-164
+finetune_arcface.py
+  s_a3385df8540ea7::t_8a582f3980fe23 1-203
+requirements.txt
+  s_a3385df8540ea7::t_cd5f37acdeab9b 1-18
+evalAll_dino.py
+  s_a3385df8540ea7::t_138047cee570b1 1-166
+build_faiss_index.py
+  s_a3385df8540ea7::t_ef2832beaee627 1-99
+predict_dino.py
+  s_a3385df8540ea7::t_a5061b44b62f85 1-148
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "72cb9b2a5f462ebb539640781b200854c37db9ee",
+  "prompts": {},
+  "sessions": {
+    "s_a3385df8540ea7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9fba5368-fdc2-4006-894c-95871d8503f7",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "vanstorm9 <antlowhur@yahoo.com>"
+    }
+  }
+}

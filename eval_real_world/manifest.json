@@ -1,0 +1,604 @@
+[
+  {
+    "idx": 0,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55398700609_9feed6c15b_b.jpg",
+    "file": "flickr_000.jpg",
+    "label": null
+  },
+  {
+    "idx": 1,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55398700654_17f7a87016_b.jpg",
+    "file": "flickr_001.jpg",
+    "label": null
+  },
+  {
+    "idx": 2,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55397586442_64542e3aaa_b.jpg",
+    "file": "flickr_002.jpg",
+    "label": null
+  },
+  {
+    "idx": 3,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55398916475_fc1a7a55b3_b.jpg",
+    "file": "flickr_003.jpg",
+    "label": null
+  },
+  {
+    "idx": 4,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55391338970_6db365536a_b.jpg",
+    "file": "flickr_004.jpg",
+    "label": null
+  },
+  {
+    "idx": 5,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55391339010_a06535b2fc_b.jpg",
+    "file": "flickr_005.jpg",
+    "label": null
+  },
+  {
+    "idx": 6,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55390008867_1cf5ee4c42_b.jpg",
+    "file": "flickr_006.jpg",
+    "label": null
+  },
+  {
+    "idx": 7,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55391074708_10cb36e5c0_b.jpg",
+    "file": "flickr_007.jpg",
+    "label": null
+  },
+  {
+    "idx": 8,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55386933622_7031d568aa_b.jpg",
+    "file": "flickr_008.jpg",
+    "label": null
+  },
+  {
+    "idx": 9,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55388266120_f562321619_b.jpg",
+    "file": "flickr_009.jpg",
+    "label": null
+  },
+  {
+    "idx": 10,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55388050289_8684bf73f9_b.jpg",
+    "file": "flickr_010.jpg",
+    "label": null
+  },
+  {
+    "idx": 11,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55388000828_bd0b2ef787_b.jpg",
+    "file": "flickr_011.jpg",
+    "label": null
+  },
+  {
+    "idx": 12,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55388261570_c690c6907b_b.jpg",
+    "file": "flickr_012.jpg",
+    "label": null
+  },
+  {
+    "idx": 13,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55387863436_57df19e384_b.jpg",
+    "file": "flickr_013.jpg",
+    "label": null
+  },
+  {
+    "idx": 14,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55388051864_f7bb661e3a_b.jpg",
+    "file": "flickr_014.jpg",
+    "label": null
+  },
+  {
+    "idx": 15,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55388048639_20f632d3c9_b.jpg",
+    "file": "flickr_015.jpg",
+    "label": null
+  },
+  {
+    "idx": 16,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55388050179_04a1b76423_b.jpg",
+    "file": "flickr_016.jpg",
+    "label": null
+  },
+  {
+    "idx": 17,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55388002423_8ca54980a9_b.jpg",
+    "file": "flickr_017.jpg",
+    "label": null
+  },
+  {
+    "idx": 18,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55387866351_efa25dc44a_b.jpg",
+    "file": "flickr_018.jpg",
+    "label": null
+  },
+  {
+    "idx": 19,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55387864381_de160c92e9_b.jpg",
+    "file": "flickr_019.jpg",
+    "label": null
+  },
+  {
+    "idx": 20,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/6033/6244586193_0b4fff3089_b.jpg",
+    "file": "flickr_020.jpg",
+    "label": "Tempest Magician"
+  },
+  {
+    "idx": 21,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/6230/6245106596_a38892e1c3_b.jpg",
+    "file": "flickr_021.jpg",
+    "label": "Divine Grace - Northwemko"
+  },
+  {
+    "idx": 22,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/6161/6244586073_8df10f5406_b.jpg",
+    "file": "flickr_022.jpg",
+    "label": null
+  },
+  {
+    "idx": 23,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/4054/4399005400_098a5daecc_b.jpg",
+    "file": "flickr_023.jpg",
+    "label": null
+  },
+  {
+    "idx": 24,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/4053/4345828244_d5683b7592_b.jpg",
+    "file": "flickr_024.jpg",
+    "label": "Sorcerer of Dark Magic"
+  },
+  {
+    "idx": 25,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/4037/4303021829_24fa3a277e_b.jpg",
+    "file": "flickr_025.jpg",
+    "label": null
+  },
+  {
+    "idx": 26,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/2122/3544759600_e508957a18_b.jpg",
+    "file": "flickr_026.jpg",
+    "label": null
+  },
+  {
+    "idx": 27,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/2265/1520163230_66417535e1_b.jpg",
+    "file": "flickr_027.jpg",
+    "label": null
+  },
+  {
+    "idx": 28,
+    "source": "reddit",
+    "url": "https://i.redd.it/16q0703lbwhh1.jpeg",
+    "file": "reddit_028.jpeg",
+    "label": null
+  },
+  {
+    "idx": 29,
+    "source": "reddit",
+    "url": "https://i.redd.it/v4bzvcswjvhh1.jpeg",
+    "file": "reddit_029.jpeg",
+    "label": null
+  },
+  {
+    "idx": 30,
+    "source": "reddit",
+    "url": "https://i.redd.it/kd7dn5uvbvhh1.png",
+    "file": "reddit_030.png",
+    "label": null
+  },
+  {
+    "idx": 31,
+    "source": "reddit",
+    "url": "https://i.redd.it/k38bgve67vhh1.png",
+    "file": "reddit_031.png",
+    "label": null
+  },
+  {
+    "idx": 32,
+    "source": "reddit",
+    "url": "https://i.redd.it/rxfauwp02vhh1.jpeg",
+    "file": "reddit_032.jpeg",
+    "label": null
+  },
+  {
+    "idx": 33,
+    "source": "reddit",
+    "url": "https://i.redd.it/h6u9rtx61vhh1.png",
+    "file": "reddit_033.png",
+    "label": null
+  },
+  {
+    "idx": 34,
+    "source": "reddit",
+    "url": "https://i.redd.it/atyrcihevuhh1.png",
+    "file": "reddit_034.png",
+    "label": "Fuse Line"
+  },
+  {
+    "idx": 35,
+    "source": "reddit",
+    "url": "https://i.redd.it/bb5e4f1muuhh1.jpeg",
+    "file": "reddit_035.jpeg",
+    "label": null
+  },
+  {
+    "idx": 36,
+    "source": "reddit",
+    "url": "https://i.redd.it/4fokzku31uhh1.jpeg",
+    "file": "reddit_036.jpeg",
+    "label": "Arcana Force XXI - The World"
+  },
+  {
+    "idx": 37,
+    "source": "reddit",
+    "url": "https://i.redd.it/t6bcf4y50uhh1.jpeg",
+    "file": "reddit_037.jpeg",
+    "label": null
+  },
+  {
+    "idx": 38,
+    "source": "reddit",
+    "url": "https://i.redd.it/81o2whbmythh1.jpeg",
+    "file": "reddit_038.jpeg",
+    "label": null
+  },
+  {
+    "idx": 39,
+    "source": "reddit",
+    "url": "https://i.redd.it/yfm9nr7zhshh1.jpeg",
+    "file": "reddit_039.jpeg",
+    "label": "MULTI:Skilled Blue Magician|Skilled White Magician|Skilled Brown Magician|Skilled Dark Magician|Skilled Red Magician"
+  },
+  {
+    "idx": 40,
+    "source": "ddg",
+    "url": "https://vignette.wikia.nocookie.net/yugioh/images/b/b3/DarkMagician-SD6-EN-C-UE.png/revision/latest?cb=20160331211958",
+    "file": "dark_magician_040.jpg",
+    "label": "Dark Magician"
+  },
+  {
+    "idx": 41,
+    "source": "ddg",
+    "url": "https://images.ygoprodeck.com/images/cards/101205006.jpg",
+    "file": "dark_magician_041.jpg",
+    "label": "Dark Magician"
+  },
+  {
+    "idx": 42,
+    "source": "ddg",
+    "url": "https://dacardworld3.imgix.net/yugisdkdarkmagicina.jpg?auto=format%2Ccompress&fm=jpg&h=1800&ixlib=php-1.2.1&w=1800&s=0776cb8efc87ec8bdca39434812e5cad",
+    "file": "dark_magician_042.jpg",
+    "label": "Dark Magician"
+  },
+  {
+    "idx": 43,
+    "source": "ddg",
+    "url": "https://images.ygoprodeck.com/images/cards/46986414.jpg",
+    "file": "dark_magician_043.jpg",
+    "label": "Dark Magician"
+  },
+  {
+    "idx": 44,
+    "source": "ddg",
+    "url": "https://images.ygoprodeck.com/images/cards/36996508.jpg",
+    "file": "dark_magician_044.jpg",
+    "label": "Dark Magician"
+  },
+  {
+    "idx": 45,
+    "source": "ddg",
+    "url": "https://i.etsystatic.com/19472283/r/il/5e2c10/1762922258/il_1588xN.1762922258_kvgb.jpg",
+    "file": "dark_magician_045.jpg",
+    "label": "Dark Magician"
+  },
+  {
+    "idx": 46,
+    "source": "ddg",
+    "url": "https://images.ygoprodeck.com/images/cards/46986417.jpg",
+    "file": "dark_magician_046.jpg",
+    "label": "Dark Magician"
+  },
+  {
+    "idx": 47,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/49052141323_f8d49cda28_b.jpg",
+    "file": "kuriboh_047.jpg",
+    "label": "Kuriboh"
+  },
+  {
+    "idx": 48,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/46892529274_486d1597e7_b.jpg",
+    "file": "kuriboh_048.jpg",
+    "label": "Kuriboh"
+  },
+  {
+    "idx": 49,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/46892527914_fecc5b1bcf_b.jpg",
+    "file": "kuriboh_049.jpg",
+    "label": "Kuriboh"
+  },
+  {
+    "idx": 50,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/47563894912_a3635d3c89_b.jpg",
+    "file": "kuriboh_050.jpg",
+    "label": "Kuriboh"
+  },
+  {
+    "idx": 51,
+    "source": "ddg",
+    "url": "https://images.ygoprodeck.com/images/cards/40640057.jpg",
+    "file": "kuriboh_051.jpg",
+    "label": "Kuriboh"
+  },
+  {
+    "idx": 52,
+    "source": "ddg",
+    "url": "https://www.hillscards.co.uk/images/yu-gi-oh-trading-card-game-yu-gi-oh-kuriboh-mil1-en034-1st-edition-p21373-13824_image.jpg",
+    "file": "kuriboh_052.jpg",
+    "label": "Kuriboh"
+  },
+  {
+    "idx": 53,
+    "source": "ddg",
+    "url": "https://images.ygoprodeck.com/images/cards/31699677.jpg",
+    "file": "kuriboh_053.jpg",
+    "label": "Kuriboh"
+  },
+  {
+    "idx": 54,
+    "source": "ddg",
+    "url": "https://images.ygoprodeck.com/images/cards/46789706.jpg",
+    "file": "kuriboh_054.jpg",
+    "label": "Kuriboh"
+  },
+  {
+    "idx": 55,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/4095/4787350481_e29818a37d_b.jpg",
+    "file": "raigeki_055.jpg",
+    "label": "Raigeki"
+  },
+  {
+    "idx": 56,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/181/430528313_d89cd7d6c7_b.jpg",
+    "file": "raigeki_056.jpg",
+    "label": "Raigeki"
+  },
+  {
+    "idx": 57,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/148/428276316_3f7b28b9c4_b.jpg",
+    "file": "raigeki_057.jpg",
+    "label": "Raigeki"
+  },
+  {
+    "idx": 58,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/155/428276301_eebd4bc6ff_b.jpg",
+    "file": "raigeki_058.jpg",
+    "label": "Raigeki"
+  },
+  {
+    "idx": 59,
+    "source": "ddg",
+    "url": "https://yugi.wiki/assets/card-images/common/12580478.jpg",
+    "file": "raigeki_059.jpg",
+    "label": "Raigeki"
+  },
+  {
+    "idx": 60,
+    "source": "ddg",
+    "url": "https://images.saymedia-content.com/.image/t_share/MTc0NDYwOTc0MDI2MjA0NTIw/best-raigeki-cards-in-yugioh.png",
+    "file": "raigeki_060.png",
+    "label": "Raigeki"
+  },
+  {
+    "idx": 61,
+    "source": "ddg",
+    "url": "https://cdn.chaoscards.co.uk/uploads/prod_img/2_214241_e.png?v=1677247612",
+    "file": "raigeki_061.png",
+    "label": "Raigeki"
+  },
+  {
+    "idx": 62,
+    "source": "ddg",
+    "url": "https://www.hillscards.co.uk/images/yu-gi-oh-trading-card-game-sdch-en021-raigeki-1st-edition-super-rare-card-p62697-98909_image.jpg",
+    "file": "raigeki_062.jpg",
+    "label": "Raigeki"
+  },
+  {
+    "idx": 63,
+    "source": "ddg",
+    "url": "http://cdn6.bigcommerce.com/s-0kvv9/products/13676/images/67847/yugioh-legendary-collection-3-yugi-s-world-single-card-secret-rare-lcyw-en059-pot-of-greed-8__98337.1461139071.500.750.jpg?c=2",
+    "file": "pot_of_greed_063.jpg",
+    "label": "Pot of Greed"
+  },
+  {
+    "idx": 64,
+    "source": "ddg",
+    "url": "https://www.hillscards.co.uk/images/yu-gi-oh-trading-card-game-ygld-enb26-pot-of-greed-unlimited-common-card-p66238-112386_image.jpg",
+    "file": "pot_of_greed_064.jpg",
+    "label": "Pot of Greed"
+  },
+  {
+    "idx": 65,
+    "source": "ddg",
+    "url": "https://assets.dicebreaker.com/yu-gi-oh-card-pot-of-greed.png/BROK/resize/660%3E/format/jpg/quality/80/yu-gi-oh-card-pot-of-greed.png",
+    "file": "pot_of_greed_065.png",
+    "label": "Pot of Greed"
+  },
+  {
+    "idx": 66,
+    "source": "ddg",
+    "url": "http://static1.wikia.nocookie.net/__cb20131012090926/yugioh/images/9/90/PotofGreed-LCJW-EN-ScR-1E.png",
+    "file": "pot_of_greed_066.png",
+    "label": "Pot of Greed"
+  },
+  {
+    "idx": 67,
+    "source": "ddg",
+    "url": "https://assets.dicebreaker.com/yu-gi-oh-pot-of-greed-card-backdrop.png/BROK/thumbnail/1600x900/format/jpg/quality/80/yu-gi-oh-pot-of-greed-card-backdrop.png",
+    "file": "pot_of_greed_067.png",
+    "label": "Pot of Greed"
+  },
+  {
+    "idx": 68,
+    "source": "ddg",
+    "url": "https://tcgplayer-cdn.tcgplayer.com/product/488162_in_1000x1000.jpg",
+    "file": "pot_of_greed_068.jpg",
+    "label": "Pot of Greed"
+  },
+  {
+    "idx": 69,
+    "source": "ddg",
+    "url": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2023/04/pot-of-greed1.jpg",
+    "file": "pot_of_greed_069.jpg",
+    "label": "Pot of Greed"
+  },
+  {
+    "idx": 70,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55277190102_0eb9ccb3bb_b.jpg",
+    "file": "dark_magician_girl_070.jpg",
+    "label": "Dark Magician Girl"
+  },
+  {
+    "idx": 71,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55184243243_bcd5fe560e_b.jpg",
+    "file": "dark_magician_girl_071.jpg",
+    "label": "Dark Magician Girl"
+  },
+  {
+    "idx": 72,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55184243253_0c2c167530_b.jpg",
+    "file": "dark_magician_girl_072.jpg",
+    "label": "Dark Magician Girl"
+  },
+  {
+    "idx": 73,
+    "source": "flickr",
+    "url": "https://live.staticflickr.com/65535/55184084681_b68b61bdc3_b.jpg",
+    "file": "dark_magician_girl_073.jpg",
+    "label": "Dark Magician Girl"
+  },
+  {
+    "idx": 74,
+    "source": "ddg",
+    "url": "https://cdn.cardsrealm.com/images/cartas/ct2-collectible-tins-2005/en/med/dark-magician-girl-en004.png?2469",
+    "file": "dark_magician_girl_074.png",
+    "label": "Dark Magician Girl"
+  },
+  {
+    "idx": 75,
+    "source": "ddg",
+    "url": "https://acecards.com/cdn/shop/files/Konami-Yu-Gi-Oh-TCG-Stainless-Steel-Card-Dark-Magician-Girl-3_600x.png?v=1727118928",
+    "file": "dark_magician_girl_075.png",
+    "label": "Dark Magician Girl"
+  },
+  {
+    "idx": 76,
+    "source": "ddg",
+    "url": "https://m.media-amazon.com/images/I/716goXmOQtL._AC_SL1500_.jpg",
+    "file": "dark_magician_girl_076.jpg",
+    "label": "Dark Magician Girl"
+  },
+  {
+    "idx": 77,
+    "source": "ddg",
+    "url": "https://tcgplayer-cdn.tcgplayer.com/product/592812_in_1000x1000.jpg",
+    "file": "dark_magician_girl_077.jpg",
+    "label": "Dark Magician Girl"
+  },
+  {
+    "idx": 78,
+    "source": "ddg",
+    "url": "https://images.ygoprodeck.com/images/cards/83764719.jpg",
+    "file": "monster_reborn_078.jpg",
+    "label": "Monster Reborn"
+  },
+  {
+    "idx": 79,
+    "source": "ddg",
+    "url": "https://yugi.wiki/assets/card-images/common/83764718.jpg",
+    "file": "monster_reborn_079.jpg",
+    "label": "Monster Reborn"
+  },
+  {
+    "idx": 80,
+    "source": "ddg",
+    "url": "https://www.cards-capital.com/44235/monster-reborn-reborn.jpg",
+    "file": "monster_reborn_080.jpg",
+    "label": "Monster Reborn"
+  },
+  {
+    "idx": 81,
+    "source": "ddg",
+    "url": "https://cdn.chaoscards.co.uk/uploads/prod_img/2_147015_e.png?v=1592437018",
+    "file": "monster_reborn_081.png",
+    "label": "Monster Reborn"
+  },
+  {
+    "idx": 82,
+    "source": "ddg",
+    "url": "https://www.hillscards.co.uk/images/yu-gi-oh-trading-card-game-ra03-en052-monster-reborn-secret-rare-card-1st-edition-p82343-161494_image.jpg",
+    "file": "monster_reborn_082.jpg",
+    "label": "Monster Reborn"
+  },
+  {
+    "idx": 83,
+    "source": "ddg",
+    "url": "https://images.ygoprodeck.com/images/cards/50213848.jpg",
+    "file": "monster_reborn_083.jpg",
+    "label": "Monster Reborn"
+  },
+  {
+    "idx": 84,
+    "source": "ddg",
+    "url": "https://static.wikia.nocookie.net/yugioh/images/3/33/SpellCardMonsterReborn-INFO-EN-SR-1E.png/revision/latest?cb=20240813055651",
+    "file": "monster_reborn_084.jpg",
+    "label": "Monster Reborn"
+  },
+  {
+    "idx": 85,
+    "source": "ddg",
+    "url": "https://i.ebayimg.com/images/g/fq4AAOSwZ51mK8IK/s-l1200.jpg",
+    "file": "monster_reborn_085.jpg",
+    "label": "Monster Reborn"
+  }
+]

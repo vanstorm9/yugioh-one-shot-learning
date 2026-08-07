@@ -14,10 +14,10 @@ import os
 import json
 import numpy as np
 import torch
-import faiss
 from time import time
 
 from yugioh_utils import DINOv2Extractor, imgPathToRGBTensor
+import faiss
 
 # ---------------------------------------------------------------------------
 # Config
@@ -27,6 +27,11 @@ OUTPUT_INDEX = './savedModels/dino_index.faiss'
 OUTPUT_META  = './savedModels/dino_meta.json'
 BATCH_SIZE   = 32
 EMBEDDING_DIM = 768   # dinov2-base CLS token
+
+# Set to path of finetune_arcface.py checkpoint to build a LoRA-enhanced index.
+# Use the same checkpoint you pass to recognize.py --lora-checkpoint.
+# Leave None to use the frozen base DINOv2 model.
+LORA_CHECKPOINT = None   # e.g. './savedModels/dino_lora_arcface.pth'
 
 assert os.path.exists(TARGET_DIR), f"Card database not found: {TARGET_DIR}"
 os.makedirs('./savedModels', exist_ok=True)
@@ -45,8 +50,9 @@ print(f'Found {len(image_paths)} images in {TARGET_DIR}')
 # ---------------------------------------------------------------------------
 # Extract embeddings in batches
 # ---------------------------------------------------------------------------
-extractor = DINOv2Extractor()
-print(f'DINOv2-base loaded on {extractor.device}')
+extractor = DINOv2Extractor(lora_checkpoint=LORA_CHECKPOINT)
+label = f'DINOv2-base + LoRA ({LORA_CHECKPOINT})' if LORA_CHECKPOINT else 'DINOv2-base (frozen)'
+print(f'{label} loaded on {extractor.device}')
 
 all_embeddings = []
 meta = []

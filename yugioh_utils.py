@@ -113,6 +113,9 @@ def calculateHOGpoints(orb, img1, img2):
 # ---------------------------------------------------------------------------
 # DINOv2 utilities
 # ---------------------------------------------------------------------------
+# transformers must be imported at module level BEFORE faiss is ever imported
+# anywhere in the process — they share conflicting BLAS libraries on macOS.
+from transformers import AutoModel as _AutoModel  # noqa: F401  (preload)
 import torchvision.transforms as T
 from PIL import Image
 
@@ -134,30 +137,65 @@ def imgPathToRGBTensor(absPath):
     return _dino_transform(img).unsqueeze(0)
 
 
-class DINOv2Extractor:
-    """Frozen DINOv2-base feature extractor. Returns L2-normalised CLS embeddings."""
+def imgArrayToRGBTensor(bgr_np):
+    """Convert a BGR numpy crop (from cv2/YOLO) to a (1,3,224,224) DINOv2 tensor."""
+    img = Image.fromarray(cv2.cvtColor(bgr_np, cv2.COLOR_BGR2RGB))
+    img = imgArtCropper(img)
+    return _dino_transform(img).unsqueeze(0)
 
-    def __init__(self, device=None):
+
+class DINOv2Extractor:
+    """
+    DINOv2-base feature extractor. Returns L2-normalised CLS embeddings.
+
+    Pass lora_checkpoint=<path> to load a fine-tuned LoRA checkpoint produced
+    by finetune_arcface.py instead of using the frozen base model.
+    """
+
+    def __init__(self, device=None, lora_checkpoint=None):
         from transformers import AutoModel
         if device is None:
-            device = "cuda" if torch.cuda.is_available() else "cpu"
+            device = "cuda" if torch.cuda.is_available() else "mps" \
+                if torch.backends.mps.is_available() else "cpu"
         self.device = device
-        self.model = AutoModel.from_pretrained("facebook/dinov2-base")
-        self.model.eval().to(device)
+
+        backbone = AutoModel.from_pretrained("facebook/dinov2-base")
+
+        if lora_checkpoint is not None:
+            from peft import LoraConfig, get_peft_model
+            lora_cfg = LoraConfig(
+                r=16, lora_alpha=32,
+                target_modules=["query", "value"],
+                lora_dropout=0.1, bias="none",
+            )
+            backbone = get_peft_model(backbone, lora_cfg)
+            ckpt = torch.load(lora_checkpoint, map_location=device)
+            backbone.load_state_dict(ckpt["backbone"])
+
+        self.model = backbone.eval().to(device)
 
     @torch.no_grad()
     def extract(self, tensor):
         """tensor: (B,3,224,224) float — returns (B, 768) numpy float32, L2-normalised."""
         tensor = tensor.to(self.device)
         outputs = self.model(pixel_values=tensor)
-        cls = outputs.last_hidden_state[:, 0, :]          # CLS token
+        cls = outputs.last_hidden_state[:, 0, :]
         cls = F.normalize(cls, p=2, dim=1)
         return cls.cpu().numpy()
 
     @torch.no_grad()
     def extract_path(self, absPath):
-        """Convenience: load one image from disk and return (768,) numpy array."""
+        """Load one image from disk, return (768,) numpy array."""
         tensor = imgPathToRGBTensor(absPath).to(self.device)
+        outputs = self.model(pixel_values=tensor)
+        cls = outputs.last_hidden_state[:, 0, :]
+        cls = F.normalize(cls, p=2, dim=1)
+        return cls.squeeze(0).cpu().numpy()
+
+    @torch.no_grad()
+    def extract_array(self, bgr_np):
+        """Extract from a BGR numpy array (e.g. YOLO crop). Returns (768,) numpy array."""
+        tensor = imgArrayToRGBTensor(bgr_np).to(self.device)
         outputs = self.model(pixel_values=tensor)
         cls = outputs.last_hidden_state[:, 0, :]
         cls = F.normalize(cls, p=2, dim=1)

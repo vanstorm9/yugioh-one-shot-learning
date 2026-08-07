@@ -17,3 +17,6 @@ Pillow>=9.0.0
 numpy>=1.23.0
 scikit-image>=0.19.0
 imutils>=0.5.3
+
+# Dataset download
+requests>=2.28.0

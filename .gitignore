@@ -1,6 +1,10 @@
 cardDatabase/
 cardDatabaseFull/
 savedModels/
+runs/
+detection_dataset/
+yolov8n.pt
+.DS_Store
 
 *.swp
 

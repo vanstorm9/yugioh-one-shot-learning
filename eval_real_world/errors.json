@@ -1,0 +1,198 @@
+[
+  {
+    "file": "flickr_020.jpg",
+    "source": "flickr",
+    "ground_truth": "Tempest Magician",
+    "predictions": [
+      [
+        "Dharc-the-Dark-Charmer-0-19327348",
+        "0.7238"
+      ],
+      [
+        "Dogmatika-Ecclesia-the-Virtuous-0-60303688",
+        "0.6763"
+      ],
+      [
+        "Avalanching-Aussa-0-29139104",
+        "0.6756"
+      ],
+      [
+        "Dark-Magic-Inheritance-0-41735184",
+        "0.6735"
+      ],
+      [
+        "Raging-Eria-0-56524813",
+        "0.6727"
+      ]
+    ],
+    "yolo_conf": 0.9433110952377319
+  },
+  {
+    "file": "flickr_024.jpg",
+    "source": "flickr",
+    "ground_truth": "Sorcerer of Dark Magic",
+    "predictions": [
+      [
+        "Convert-Contact-0-82639107",
+        "0.6358"
+      ],
+      [
+        "Kuzuha-the-Bewitching-Deity-Ashtra-0-65325949",
+        "0.6119"
+      ],
+      [
+        "Mind-Mirror-Force-0-100457102",
+        "0.6081"
+      ],
+      [
+        "Ars-Magna-of-Purification-and-Corruption-0-62368221",
+        "0.6024"
+      ],
+      [
+        "Kewl-Tune-Reco-0-89392810",
+        "0.6021"
+      ]
+    ],
+    "yolo_conf": 0.8738929033279419
+  },
+  {
+    "file": "reddit_039.jpeg",
+    "source": "reddit",
+    "ground_truth": "MULTI:Skilled Blue Magician|Skilled White Magician|Skilled Brown Magician|Skilled Dark Magician|Skilled Red Magician",
+    "predictions": [
+      [
+        "Rookie-Fur-Hire-0-48214588",
+        "0.8273"
+      ],
+      [
+        "Hieratic-Chant-0-300302009",
+        "0.8250"
+      ],
+      [
+        "Chevreuil-Hunting-Scout-of-the-Deep-Forest-0-13023431",
+        "0.8243"
+      ],
+      [
+        "Dark-Unity-0-300302062",
+        "0.8232"
+      ],
+      [
+        "Ferocious-Flame-Swordsman-0-98642179",
+        "0.8194"
+      ]
+    ],
+    "yolo_conf": 0.9660290479660034
+  },
+  {
+    "file": "reddit_039.jpeg",
+    "source": "reddit",
+    "ground_truth": "MULTI:Skilled Blue Magician|Skilled White Magician|Skilled Brown Magician|Skilled Dark Magician|Skilled Red Magician",
+    "predictions": [
+      [
+        "Sacred-Noble-Knight-of-King-Artorigus-0-10613952",
+        "0.8637"
+      ],
+      [
+        "Legendary-Knight-Hermos-0-84565800",
+        "0.8623"
+      ],
+      [
+        "FaceOff-0-39276790",
+        "0.8609"
+      ],
+      [
+        "Destiny-HERO-Dreadnought-Servant-0-98931282",
+        "0.8578"
+      ],
+      [
+        "DDD-Cursed-King-Siegfried-0-44852429",
+        "0.8570"
+      ]
+    ],
+    "yolo_conf": 0.9596142172813416
+  },
+  {
+    "file": "reddit_039.jpeg",
+    "source": "reddit",
+    "ground_truth": "MULTI:Skilled Blue Magician|Skilled White Magician|Skilled Brown Magician|Skilled Dark Magician|Skilled Red Magician",
+    "predictions": [
+      [
+        "Ryu-Senshi-0-49868263",
+        "0.8494"
+      ],
+      [
+        "Sacred-Noble-Knight-of-King-Artorigus-0-10613952",
+        "0.8400"
+      ],
+      [
+        "Legendary-Knight-Critias-0-85800949",
+        "0.8383"
+      ],
+      [
+        "MekkKnight-Avram-0-84754430",
+        "0.8361"
+      ],
+      [
+        "Lancer-Archfiend-0-79418153",
+        "0.8342"
+      ]
+    ],
+    "yolo_conf": 0.9454869627952576
+  },
+  {
+    "file": "reddit_039.jpeg",
+    "source": "reddit",
+    "ground_truth": "MULTI:Skilled Blue Magician|Skilled White Magician|Skilled Brown Magician|Skilled Dark Magician|Skilled Red Magician",
+    "predictions": [
+      [
+        "Familiar-Knight-0-89731911",
+        "0.8341"
+      ],
+      [
+        "Legendary-Knight-Critias-0-85800949",
+        "0.8232"
+      ],
+      [
+        "Marauding-Captain-0-2460565",
+        "0.8185"
+      ],
+      [
+        "Power-Connection-0-100200294",
+        "0.8098"
+      ],
+      [
+        "Hero-of-the-East-0-89987208",
+        "0.8086"
+      ]
+    ],
+    "yolo_conf": 0.9330472350120544
+  },
+  {
+    "file": "reddit_039.jpeg",
+    "source": "reddit",
+    "ground_truth": "MULTI:Skilled Blue Magician|Skilled White Magician|Skilled Brown Magician|Skilled Dark Magician|Skilled Red Magician",
+    "predictions": [
+      [
+        "Karakuri-Muso-mdl-818-Haipa-0-24150026",
+        "0.7879"
+      ],
+      [
+        "Garoth-Lightsworn-Warrior-0-59019082",
+        "0.7791"
+      ],
+      [
+        "Demise-King-of-Armageddon-0-72426662",
+        "0.7786"
+      ],
+      [
+        "Hero-of-the-East-0-89987208",
+        "0.7772"
+      ],
+      [
+        "Raregold-Armor-0-7625614",
+        "0.7758"
+      ]
+    ],
+    "yolo_conf": 0.9285902976989746
+  }
+]

@@ -19,19 +19,25 @@ import os
 import math
 import random
 import numpy as np
+import cv2
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch import optim
 from torch.utils.data import Dataset, DataLoader
 import torchvision.datasets as dset
+import torchvision.transforms as T
+from PIL import Image
 from time import time
 
-from yugioh_utils import imgPathToRGBTensor
+from yugioh_utils import imgArtCropper, _IMAGENET_MEAN, _IMAGENET_STD
 
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
+# Set False to use clean images only (faster, lower robustness)
+USE_ROBUST_AUGMENTATION = True
+
 TARGET_DIR        = './cardDatabaseFull/'
 SAVE_PATH         = './savedModels/dino_lora_arcface.pth'
 BATCH_SIZE        = 32
@@ -45,6 +51,77 @@ EMBEDDING_DIM     = 768
 
 assert os.path.exists(TARGET_DIR)
 os.makedirs('./savedModels', exist_ok=True)
+
+
+# ---------------------------------------------------------------------------
+# Robust augmentation pipeline
+# ---------------------------------------------------------------------------
+
+class _GlareTransform:
+    """Soft specular highlight — simulates foil/holographic cards."""
+    def __init__(self, p=0.4):
+        self.p = p
+
+    def __call__(self, pil_img):
+        if random.random() > self.p:
+            return pil_img
+        img = np.array(pil_img).astype(np.float32) / 255.0
+        h, w = img.shape[:2]
+        glare = np.zeros((h, w), dtype=np.float32)
+        cx = random.randint(w // 5, 4 * w // 5)
+        cy = random.randint(h // 5, 4 * h // 5)
+        ax = random.randint(w // 8, w // 2)
+        ay = random.randint(h // 8, h // 2)
+        cv2.ellipse(glare, (cx, cy), (ax, ay), random.randint(0, 180), 0, 360, 1.0, -1)
+        sigma = random.randint(10, 30)
+        glare = cv2.GaussianBlur(glare, (sigma * 6 + 1, sigma * 6 + 1), sigma)
+        glare *= random.uniform(0.25, 0.70)
+        img = np.clip(img + glare[:, :, np.newaxis], 0.0, 1.0)
+        return Image.fromarray((img * 255).astype(np.uint8))
+
+
+class _MotionBlurTransform:
+    """Directional blur — simulates camera shake or fast card movement."""
+    def __init__(self, p=0.25):
+        self.p = p
+
+    def __call__(self, pil_img):
+        if random.random() > self.p:
+            return pil_img
+        img = np.array(pil_img)
+        ksize = random.choice([5, 7, 9, 11])
+        K = np.zeros((ksize, ksize), dtype=np.float32)
+        K[ksize // 2, :] = 1.0 / ksize
+        M = cv2.getRotationMatrix2D((ksize // 2, ksize // 2), random.uniform(0, 180), 1)
+        K = cv2.warpAffine(K, M, (ksize, ksize))
+        img = cv2.filter2D(img, -1, K)
+        return Image.fromarray(img)
+
+
+# Applied during training — teaches the model to be invariant to real-world
+# corruptions so that a blurry/glary/occluded query still finds the right card.
+# NO horizontal flip: a mirrored card looks like a different card.
+ROBUST_TRANSFORM = T.Compose([
+    T.Resize((256, 256)),
+    T.RandomCrop(224),
+    _GlareTransform(p=0.40),
+    _MotionBlurTransform(p=0.25),
+    T.RandomApply([T.ColorJitter(brightness=0.4, contrast=0.4,
+                                 saturation=0.4, hue=0.10)], p=0.80),
+    T.RandomGrayscale(p=0.05),
+    T.RandomApply([T.GaussianBlur(kernel_size=9, sigma=(0.1, 2.0))], p=0.30),
+    T.RandomPerspective(distortion_scale=0.30, p=0.50),
+    T.RandomAffine(degrees=15, translate=(0.05, 0.05), scale=(0.85, 1.15)),
+    T.ToTensor(),
+    T.Normalize(mean=_IMAGENET_MEAN, std=_IMAGENET_STD),
+    T.RandomErasing(p=0.30, scale=(0.02, 0.15)),   # simulates finger / partial occlusion
+])
+
+CLEAN_TRANSFORM = T.Compose([
+    T.Resize((224, 224)),
+    T.ToTensor(),
+    T.Normalize(mean=_IMAGENET_MEAN, std=_IMAGENET_STD),
+])
 
 
 # ---------------------------------------------------------------------------
@@ -93,18 +170,27 @@ class ArcFaceLoss(nn.Module):
 # Dataset
 # ---------------------------------------------------------------------------
 class CardDataset(Dataset):
-    """Returns an RGB tensor and class index for each card image."""
+    """
+    Loads card images with optional heavy augmentation.
 
-    def __init__(self, root):
-        self.folder = dset.ImageFolder(root=root)
-        self.imgs   = self.folder.imgs
+    With USE_ROBUST_AUGMENTATION=True the model sees glare, blur, perspective
+    distortion, colour jitter, and random erasing — making it invariant to the
+    real-world corruptions a phone camera introduces.
+    """
+
+    def __init__(self, root, augment=USE_ROBUST_AUGMENTATION):
+        self.folder    = dset.ImageFolder(root=root)
+        self.imgs      = self.folder.imgs
+        self.transform = ROBUST_TRANSFORM if augment else CLEAN_TRANSFORM
 
     def __len__(self):
         return len(self.imgs)
 
     def __getitem__(self, idx):
         path, label = self.imgs[idx]
-        tensor = imgPathToRGBTensor(path).squeeze(0)   # (3, 224, 224)
+        img    = Image.open(path).convert("RGB")
+        img    = imgArtCropper(img)           # crop card art region first
+        tensor = self.transform(img)          # (3, 224, 224)
         return tensor, label
 
     @property

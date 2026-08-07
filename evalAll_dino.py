@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Batch evaluation using DINOv2 + FAISS + optional ORB re-ranking.
+Batch evaluation using DINOv2 + FAISS.
 
 Iterates over a random sample of the card database, treating each image as
 a query, and measures rank-1 accuracy against the full index.
@@ -10,46 +10,37 @@ Usage:
 """
 
 import os
+import sys
 import json
-import random
+import argparse
 import numpy as np
-import torch
-import cv2
-import faiss
 from time import time
 
-from yugioh_utils import (
-    DINOv2Extractor, imgPathToRGBTensor,
-    imgArtCropper, calculateHOGpoints, DIM,
-)
+# yugioh_utils pre-loads transformers before faiss to avoid BLAS crash on macOS
+from yugioh_utils import DINOv2Extractor, imgPathToRGBTensor, imgArtCropper
+import faiss  # must come after yugioh_utils
 
 # ---------------------------------------------------------------------------
-# Config
+# CLI args
 # ---------------------------------------------------------------------------
-INDEX_PATH  = './savedModels/dino_index.faiss'
-META_PATH   = './savedModels/dino_meta.json'
-TARGET_DIR  = './cardDatabaseFull/'
+ap = argparse.ArgumentParser(description='Evaluate DINOv2+FAISS card recognition')
+ap.add_argument('--limit',    type=int, default=None, help='Max cards to evaluate')
+ap.add_argument('--index',    default='./savedModels/dino_index.faiss')
+ap.add_argument('--meta',     default='./savedModels/dino_meta.json')
+ap.add_argument('--card-db',  default='./cardDatabaseFull/')
+ap.add_argument('--lora-checkpoint', default=None)
+args = ap.parse_args()
+
+INDEX_PATH  = args.index
+META_PATH   = args.meta
+TARGET_DIR  = args.card_db
 
 assert os.path.exists(INDEX_PATH), f'Run build_faiss_index.py first: {INDEX_PATH}'
 assert os.path.exists(META_PATH)
 assert os.path.exists(TARGET_DIR)
 
-HOGRankingEnable = True
-siftNLim         = 500
-extremeSIFT      = True
-dim              = DIM
 visualizeResult  = True
-
-# How many cards to evaluate (None = all)
-testCardIterLim  = None
-
-
-def calculateSIFTscore(cosine_score, numOfPts):
-    """Higher is better."""
-    if extremeSIFT:
-        return cosine_score + (numOfPts ** 3) / 100000
-    return cosine_score + (numOfPts ** 2) / 100000
-
+testCardIterLim  = args.limit
 
 # ---------------------------------------------------------------------------
 # Load index + metadata
@@ -60,8 +51,8 @@ with open(META_PATH) as f:
     meta = json.load(f)
 print(f'Index loaded: {index.ntotal} vectors')
 
-extractor = DINOv2Extractor()
-orb = cv2.ORB_create()
+extractor = DINOv2Extractor(lora_checkpoint=args.lora_checkpoint)
+print('Mode: DINOv2 + FAISS')
 
 # ---------------------------------------------------------------------------
 # Collect test images (one per card folder)
@@ -105,40 +96,23 @@ for cardTestNum, (cardName, imagePath) in enumerate(test_images):
     rankList = [(meta[i]['card_name'], float(scores[j]), meta[i]['abs_path'])
                 for j, i in enumerate(indices)]
 
-    # ORB re-ranking
-    siftImg0 = imgArtCropper(cv2.imread(imagePath, 0))
-    siftImg0 = cv2.resize(siftImg0, dim, interpolation=cv2.INTER_AREA)
-    siftImg0 = cv2.equalizeHist(siftImg0)
-
-    if HOGRankingEnable:
-        rankListFinal = []
-        for name, cosine_score, absPath in rankList[:siftNLim]:
-            img1 = imgArtCropper(cv2.imread(absPath, 0))
-            img1 = cv2.resize(img1, dim, interpolation=cv2.INTER_AREA)
-            numPoints = calculateHOGpoints(orb, siftImg0, img1)
-            finalScore = calculateSIFTscore(cosine_score, numPoints)
-            rankListFinal.append((name, finalScore, absPath, numPoints, cosine_score))
-        rankListFinal.sort(key=lambda x: x[1], reverse=True)
-    else:
-        rankListFinal = [(n, s, p, None, s) for n, s, p in rankList]
-
     # Score rank-1
     guessedCorrectlyRankOne = False
-    for rankIter, (name, score, absPath, numHOGPoints, originalScore) in enumerate(rankListFinal):
+    for rankIter, (name, score, absPath) in enumerate(rankList):
         if absPath.split('/')[-2] == cardName:
             if rankIter == 0:
                 guessedCorrectlyRankOne = True
                 pred = np.append(pred, 1)
                 if visualizeResult:
                     print(f'[{cardTestNum}] Correct   {cardName}  '
-                          f'rank:0  score:{score:.4f}  cosine:{originalScore:.4f}'
+                          f'rank:0  score:{score:.4f}'
                           f'  ({time()-loop_begin:.2f}s)')
             else:
                 pred = np.append(pred, 0)
                 if visualizeResult:
-                    top1_name = rankListFinal[0][0]
+                    top1_name = rankList[0][0]
                     print(f'[{cardTestNum}] Incorrect {cardName}  '
-                          f'rank:{rankIter}  top1:{top1_name}  cosine:{originalScore:.4f}'
+                          f'rank:{rankIter}  top1:{top1_name}  score:{score:.4f}'
                           f'  ({time()-loop_begin:.2f}s)')
             break
     else:

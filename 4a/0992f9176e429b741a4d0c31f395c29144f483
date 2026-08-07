@@ -1,0 +1,95 @@
+eval_real_world/errors.json
+  s_a3385df8540ea7::t_822cdb21aa81e5 1-8,10-11,14-15,18-20,22-23,26-27,29-36,38-39,42-43,46-47,50-51,54-55,57-63,66-67,124,150-151,154-155,158-160,194-195,197-198
+  s_a3385df8540ea7::t_a2b3afba836ac6 9,12-13,16-17,21,24-25,28,37,40-41,44-45,48-49,52-53,56,64-65,68-123,125-149,152-153,156-157,161-193,196
+predict_dino.py
+  s_a3385df8540ea7::t_311b4a90b04cb0 15
+  s_a3385df8540ea7::t_e380fb94c99f0b 3,14,34-35,60,75,82,91
+generate_detection_dataset.py
+  s_a3385df8540ea7::t_d746a28b50a1ae 1-397
+yugioh_utils.py
+  s_a3385df8540ea7::t_90cdb27bb34217 116-118
+  s_a3385df8540ea7::t_d2584dac7aa43c 140-146,148-149,151-155,158-159,161-175,182,188,194-198,200
+  s_36fe3a165ec33b::t_2d2f8a1c901538 199,201-202
+scrape_eval_dataset.py
+  s_a3385df8540ea7::t_5456b81197684c 1-86,88,97,114-281
+  s_a3385df8540ea7::t_6a0b8141ff357c 87,89-96,98-113
+requirements.txt
+  s_a3385df8540ea7::t_54bff135584bef 20-22
+build_faiss_index.py
+  s_a3385df8540ea7::t_a523afc32e1ec4 31-35
+  s_a3385df8540ea7::t_06f3494647f6e5 20
+  s_a3385df8540ea7::t_42972b75568246 53-55
+download_dataset.py
+  s_a3385df8540ea7::t_b693fcedb2fcba 134-135
+  s_a3385df8540ea7::t_2e55db8afd27e7 1-115,118-133,136-190
+  s_a3385df8540ea7::t_0d1e48c905fb4e 116-117
+eval_real_world.py
+  s_a3385df8540ea7::t_6c648d02324143 159-160,162-180,182-188,190-193,195-198,200-220,222-224
+  s_a3385df8540ea7::t_99e36219af6640 104,106-109
+  s_a3385df8540ea7::t_27af28278cf923 1-103,105,110-158,161,181,189,194,199,221,225-246
+recognize.py
+  s_a3385df8540ea7::t_de90550a0345ed 21
+  s_a3385df8540ea7::t_5ef91196787e24 154
+  s_a3385df8540ea7::t_3a92dc87264bb3 1-5,7-19,22-25,31-76,79-153,155-250
+  s_a3385df8540ea7::t_175d54bb3f4eea 6,20,26-30,77-78
+evalAll_dino.py
+  s_a3385df8540ea7::t_7c4f96d66ef914 13,15,24,26-36,43
+  s_a3385df8540ea7::t_849af5355fd43f 3,20,55
+  s_a3385df8540ea7::t_a36c40d7fdeff4 21
+  s_a3385df8540ea7::t_e6a13a4d742e1c 54
+  s_a3385df8540ea7::t_32bf5e95706bb6 19
+  s_a3385df8540ea7::t_34d121c4efda57 101,108,113,115
+eval_real_world/manifest.json
+  s_a3385df8540ea7::t_86597178a429c7 176-196
+  s_a3385df8540ea7::t_25f0b12d721d81 147,154,175,245,259,280
+  s_a3385df8540ea7::t_174b8a9aaec895 281-602
+  s_a3385df8540ea7::t_44532fa441cc4d 1-146,148-153,155-174,603-604
+  s_a3385df8540ea7::t_f04ffe404b3721 197-244,246-258,260-279
+finetune_arcface.py
+  s_a3385df8540ea7::t_da2ef382ceeb7a 56-126
+  s_a3385df8540ea7::t_1f6752eca82b9f 173-179,181-184,191-193
+  s_a3385df8540ea7::t_461a7c744cb727 22,29-30,33
+  s_a3385df8540ea7::t_e256e2e245dd5e 38-40
+.gitignore
+  s_a3385df8540ea7::t_e8e258d5e82517 4-7
+EXPERIMENTS.md
+  s_a3385df8540ea7::t_4dce2df0fa2234 1-76,78-79,161-162
+  s_a3385df8540ea7::t_b9f6576679807c 102-117
+  s_a3385df8540ea7::t_be25efd773b688 118-160
+  s_a3385df8540ea7::t_3b8ba961cf4dab 163-211
+  s_a3385df8540ea7::t_e25b8094731c1c 77,80-101
+scrape_realworld_eval.py
+  s_a3385df8540ea7::t_a936458d927484 293-359
+  s_a3385df8540ea7::t_ef5e36b05e032e 1-50,55-292,360-378,388-441,446,457-500,504-506,509-511,513-518,534-535,537-545,548,556-592,598-712
+  s_a3385df8540ea7::t_9bdaf514cd005c 442-445,447-456
+  s_a3385df8540ea7::t_94be1d5c74675e 546-547,549-555
+  s_a3385df8540ea7::t_84f34a8c3cc622 593-597
+  s_a3385df8540ea7::t_f46ef96c55a4ef 51-54
+  s_a3385df8540ea7::t_bb7a98f55ee32e 379-387
+  s_a3385df8540ea7::t_9876328057aefc 501-503
+  s_a3385df8540ea7::t_1cede49bbb376e 507-508,512,519-533,536
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "4a0992f9176e429b741a4d0c31f395c29144f483",
+  "prompts": {},
+  "sessions": {
+    "s_36fe3a165ec33b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "926b113c-5711-4ce0-a54c-e77a0c8b2077",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "vanstorm9 <antlowhur@yahoo.com>"
+    },
+    "s_a3385df8540ea7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9fba5368-fdc2-4006-894c-95871d8503f7",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "vanstorm9 <antlowhur@yahoo.com>"
+    }
+  }
+}

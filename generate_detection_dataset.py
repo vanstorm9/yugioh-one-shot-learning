@@ -10,7 +10,7 @@ Each composite image places 1-4 random card scans onto a background with:
   Whole-img : brightness/contrast/saturation jitter, optional motion blur,
               random noise overlay
 
-Output structure (YOLO format, class 0 = "card"):
+Output structure (YOLO format, class 0 = "card", class 1 = "card_back"):
   detection_dataset/
     images/train/*.jpg   images/val/*.jpg
     labels/train/*.txt   labels/val/*.txt
@@ -20,6 +20,7 @@ Usage:
   python generate_detection_dataset.py
   python generate_detection_dataset.py --n-train 5000 --n-val 800
   python generate_detection_dataset.py --bg-dir ./backgrounds   # use real bg photos
+  python generate_detection_dataset.py --card-back-dir ./card_backs  # adds card_back class
 """
 
 import os
@@ -48,6 +49,7 @@ SHADOW_PROB      = 0.55
 OCCLUDER_PROB    = 0.15
 MOTION_BLUR_PROB = 0.10
 NOISE_PROB       = 0.30
+CARD_BACK_PROB   = 0.30  # fraction of placed cards that use a card back (class 1)
 MIN_VISIBLE_FRAC = 0.25    # skip label if < 25% of card is visible
 WORKERS          = 8
 
@@ -170,10 +172,11 @@ def _drop_shadow(bg_pil: Image.Image, x, y, rw, rh) -> Image.Image:
 # Core image generator
 # ---------------------------------------------------------------------------
 
-def _generate_one(card_paths, img_w, img_h, bg_paths=None):
+def _generate_one(card_paths, img_w, img_h, bg_paths=None, card_back_paths=None):
     """
     Build one synthetic image.
     Returns (bgr_np: ndarray, labels: list[str]).
+    Class 0 = card front, class 1 = card back.
     """
     # ---- Background ----
     if bg_paths and random.random() < 0.5:
@@ -192,8 +195,11 @@ def _generate_one(card_paths, img_w, img_h, bg_paths=None):
     placed  = []   # (x1,y1,x2,y2) of each placed card for occluder logic
 
     for _ in range(n_cards):
+        use_back = (card_back_paths and random.random() < CARD_BACK_PROB)
+        pool = card_back_paths if use_back else card_paths
+        card_class = 1 if use_back else 0
         try:
-            card_pil = Image.open(random.choice(card_paths)).convert("RGB")
+            card_pil = Image.open(random.choice(pool)).convert("RGB")
         except Exception:
             continue
 
@@ -246,7 +252,7 @@ def _generate_one(card_paths, img_w, img_h, bg_paths=None):
         cy = (vy1 + vy2) / 2 / img_h
         bw = (vx2 - vx1) / img_w
         bh = (vy2 - vy1) / img_h
-        labels.append(f"0 {cx:.6f} {cy:.6f} {bw:.6f} {bh:.6f}")
+        labels.append(f"{card_class} {cx:.6f} {cy:.6f} {bw:.6f} {bh:.6f}")
         placed.append((vx1, vy1, vx2, vy2))
 
     # ---- Random occluder ----
@@ -290,14 +296,18 @@ def _generate_one(card_paths, img_w, img_h, bg_paths=None):
 # Dataset writer
 # ---------------------------------------------------------------------------
 
-def _write_yaml(out_dir):
+def _write_yaml(out_dir, has_card_backs=False):
     path = os.path.join(out_dir, "card.yaml")
     with open(path, "w") as f:
         f.write(f"path: {os.path.abspath(out_dir)}\n")
         f.write("train: images/train\n")
         f.write("val:   images/val\n\n")
-        f.write("nc: 1\n")
-        f.write("names: ['card']\n")
+        if has_card_backs:
+            f.write("nc: 2\n")
+            f.write("names: ['card', 'card_back']\n")
+        else:
+            f.write("nc: 1\n")
+            f.write("names: ['card']\n")
     return path
 
 
@@ -310,14 +320,16 @@ def _load_card_paths(card_db):
     return paths
 
 
-def generate_split(split, n, card_paths, out_dir, img_size, bg_paths, workers):
+def generate_split(split, n, card_paths, out_dir, img_size, bg_paths, workers,
+                   card_back_paths=None):
     img_dir = os.path.join(out_dir, "images", split)
     lbl_dir = os.path.join(out_dir, "labels", split)
     os.makedirs(img_dir, exist_ok=True)
     os.makedirs(lbl_dir, exist_ok=True)
 
     def _worker(idx):
-        img_np, labels = _generate_one(card_paths, img_size, img_size, bg_paths)
+        img_np, labels = _generate_one(card_paths, img_size, img_size,
+                                       bg_paths, card_back_paths)
         stem = f"{split}_{idx:05d}"
         cv2.imwrite(os.path.join(img_dir, stem + ".jpg"), img_np,
                     [cv2.IMWRITE_JPEG_QUALITY, 92])
@@ -345,8 +357,10 @@ def main():
     ap.add_argument("--n-val",    type=int, default=N_VAL)
     ap.add_argument("--out",      type=str, default="./detection_dataset")
     ap.add_argument("--card-db",  type=str, default="./cardDatabaseFull")
-    ap.add_argument("--bg-dir",   type=str, default=None,
+    ap.add_argument("--bg-dir",        type=str, default=None,
                     help="Optional folder of real background photos")
+    ap.add_argument("--card-back-dir", type=str, default=None,
+                    help="Folder of card back images (adds card_back class 1)")
     ap.add_argument("--img-size", type=int, default=IMG_SIZE)
     ap.add_argument("--workers",  type=int, default=WORKERS)
     args = ap.parse_args()
@@ -360,7 +374,7 @@ def main():
     if not card_paths:
         print("ERROR: no images found in card database.")
         sys.exit(1)
-    print(f"  {len(card_paths)} card images found")
+    print(f"  {len(card_paths)} card front images found")
 
     bg_paths = None
     if args.bg_dir and os.path.isdir(args.bg_dir):
@@ -373,24 +387,39 @@ def main():
     else:
         print("  Using procedural backgrounds (pass --bg-dir for real photos)")
 
+    card_back_paths = None
+    if args.card_back_dir and os.path.isdir(args.card_back_dir):
+        card_back_paths = [
+            os.path.join(args.card_back_dir, f)
+            for f in os.listdir(args.card_back_dir)
+            if f.lower().endswith(('.jpg', '.jpeg', '.png'))
+        ]
+        if card_back_paths:
+            print(f"  {len(card_back_paths)} card back images found — enabling card_back class")
+        else:
+            print(f"  WARNING: --card-back-dir specified but no images found, skipping")
+            card_back_paths = None
+    else:
+        print("  No card back dir — training single-class (card only)")
+
     os.makedirs(args.out, exist_ok=True)
 
     print(f"\nGenerating {args.n_train} train + {args.n_val} val images "
           f"at {args.img_size}x{args.img_size}...")
 
     generate_split("train", args.n_train, card_paths, args.out,
-                   args.img_size, bg_paths, args.workers)
+                   args.img_size, bg_paths, args.workers, card_back_paths)
     generate_split("val",   args.n_val,   card_paths, args.out,
-                   args.img_size, bg_paths, args.workers)
+                   args.img_size, bg_paths, args.workers, card_back_paths)
 
-    yaml_path = _write_yaml(args.out)
+    yaml_path = _write_yaml(args.out, has_card_backs=bool(card_back_paths))
 
     print(f"\nDone.  Dataset written to {os.path.abspath(args.out)}")
     print(f"YAML:  {yaml_path}")
     print()
     print("Next — train YOLOv8:")
     print(f"  pip install ultralytics")
-    print(f"  yolo detect train data={yaml_path} model=yolov8n.pt epochs=50 imgsz={args.img_size}")
+    print(f"  yolo detect train data={yaml_path} model=yolov8n.pt epochs=120 imgsz={args.img_size}")
 
 
 if __name__ == "__main__":

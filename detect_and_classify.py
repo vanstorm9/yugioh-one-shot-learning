@@ -97,20 +97,29 @@ print(f"  {len(xyxy)} detection(s)\n")
 # ---------------------------------------------------------------------------
 display = img_bgr.copy()
 BLUE  = (255, 80, 0)
+GRAY  = (160, 160, 160)
 FONT  = cv2.FONT_HERSHEY_SIMPLEX
 SCALE = 0.6
 THICK = 2
 
-for i, (box, yolo_conf, cls) in enumerate(zip(xyxy, confs, classes)):
-    if cls == 1:
-        print(f"  Detection {i+1}  yolo={yolo_conf:.2f}  → card back (skipped)")
-        continue
+def draw_box(img, x1, y1, x2, y2, label, color):
+    cv2.rectangle(img, (x1, y1), (x2, y2), color, THICK)
+    (tw, th), baseline = cv2.getTextSize(label, FONT, SCALE, THICK)
+    label_y = y1 - 8 if y1 - 8 > th else y2 + th + 8
+    cv2.rectangle(img, (x1, label_y - th - baseline), (x1 + tw, label_y + baseline), color, -1)
+    cv2.putText(img, label, (x1, label_y), FONT, SCALE, (255, 255, 255), THICK, cv2.LINE_AA)
 
+for i, (box, yolo_conf, cls) in enumerate(zip(xyxy, confs, classes)):
     x1, y1, x2, y2 = map(int, box)
     x1 = max(0, x1); y1 = max(0, y1)
     x2 = min(img_bgr.shape[1], x2); y2 = min(img_bgr.shape[0], y2)
-    crop = img_bgr[y1:y2, x1:x2]
 
+    if cls == 1:
+        print(f"  Detection {i+1}  yolo={yolo_conf:.2f}  → Card Back")
+        draw_box(display, x1, y1, x2, y2, f"Card Back ({yolo_conf:.2f})", GRAY)
+        continue
+
+    crop = img_bgr[y1:y2, x1:x2]
     try:
         emb = extractor.extract_array(crop)
     except Exception as e:
@@ -131,15 +140,7 @@ for i, (box, yolo_conf, cls) in enumerate(zip(xyxy, confs, classes)):
         for rank, (name, score) in enumerate(predictions[1:], 2):
             print(f"           top-{rank}: {name}  ({score:.4f})")
 
-    # Bounding box
-    cv2.rectangle(display, (x1, y1), (x2, y2), BLUE, THICK)
-
-    # Label background + text
-    label = f"{top_name} ({top_score:.2f})"
-    (tw, th), baseline = cv2.getTextSize(label, FONT, SCALE, THICK)
-    label_y = y1 - 8 if y1 - 8 > th else y2 + th + 8
-    cv2.rectangle(display, (x1, label_y - th - baseline), (x1 + tw, label_y + baseline), BLUE, -1)
-    cv2.putText(display, label, (x1, label_y), FONT, SCALE, (255, 255, 255), THICK, cv2.LINE_AA)
+    draw_box(display, x1, y1, x2, y2, f"{top_name} ({top_score:.2f})", BLUE)
 
 # ---------------------------------------------------------------------------
 # Show

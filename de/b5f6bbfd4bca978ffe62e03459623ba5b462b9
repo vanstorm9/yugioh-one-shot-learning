@@ -1,0 +1,19 @@
+detect_and_classify.py
+  s_8dc4a83545a4a6::t_be73a4e8794b1f 100,105-110,112,117-122,143
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "deb5f6bbfd4bca978ffe62e03459623ba5b462b9",
+  "prompts": {},
+  "sessions": {
+    "s_8dc4a83545a4a6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b1e8ae5b-c3d4-4cf2-bd34-01fb057d9be0",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "vanstorm9 <antlowhur@yahoo.com>"
+    }
+  }
+}

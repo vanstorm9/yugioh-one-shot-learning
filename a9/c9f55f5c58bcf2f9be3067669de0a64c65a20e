@@ -1,0 +1,37 @@
+recognize_video.py
+  s_8dc4a83545a4a6::t_2859414725314d 84-86
+  s_8dc4a83545a4a6::t_9e9ba63fe56585 40-42
+  s_68879f3b893cef::t_8afd3447dab0d3 1-39,43-83,87-120
+generate_detection_dataset.py
+  s_8dc4a83545a4a6::t_567b78b452ba6c 320,333-336,357,359-371
+  s_8dc4a83545a4a6::t_02e605005755ad 51,53-56
+  s_8dc4a83545a4a6::t_5143a9f11edc2f 176-232
+build_faiss_index.py
+  s_8dc4a83545a4a6::t_1a411185994532 11,15,17,19,22,24,28,30-45,50-108,118-120,123,125-127,136-164,166-169,176,178
+measure_domain_gap.py
+  s_8dc4a83545a4a6::t_7a9403b312a8e9 1-185
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "a9c9f55f5c58bcf2f9be3067669de0a64c65a20e",
+  "prompts": {},
+  "sessions": {
+    "s_68879f3b893cef": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "35d10813-2485-4b64-a847-eee229f080e7",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "vanstorm9 <antlowhur@yahoo.com>"
+    },
+    "s_8dc4a83545a4a6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b1e8ae5b-c3d4-4cf2-bd34-01fb057d9be0",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "vanstorm9 <antlowhur@yahoo.com>"
+    }
+  }
+}

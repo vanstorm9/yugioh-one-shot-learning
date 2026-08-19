@@ -48,7 +48,12 @@ PERSPECTIVE_PROB = 0.60
 SHADOW_PROB      = 0.55
 OCCLUDER_PROB    = 0.15
 MOTION_BLUR_PROB = 0.10
+DEFOCUS_PROB     = 0.45
 NOISE_PROB       = 0.30
+JPEG_PROB        = 0.50
+VIGNETTE_PROB    = 0.35
+HAND_OCCLUDE_PROB = 0.25
+COLOR_TEMP_PROB  = 0.40
 CARD_BACK_PROB   = 0.30  # fraction of placed cards that use a card back (class 1)
 MIN_VISIBLE_FRAC = 0.25    # skip label if < 25% of card is visible
 WORKERS          = 8
@@ -168,6 +173,63 @@ def _drop_shadow(bg_pil: Image.Image, x, y, rw, rh) -> Image.Image:
     return composite.convert("RGB")
 
 
+def _add_defocus(img_np: np.ndarray) -> np.ndarray:
+    """Gaussian defocus blur to simulate out-of-focus webcam capture."""
+    sigma = random.uniform(1.0, 5.0)
+    k = int(sigma * 4) * 2 + 1
+    return cv2.GaussianBlur(img_np, (k, k), sigma)
+
+
+def _add_vignette(img_np: np.ndarray) -> np.ndarray:
+    """Darken corners to simulate webcam lens falloff."""
+    h, w = img_np.shape[:2]
+    Y, X = np.ogrid[:h, :w]
+    cx, cy = w / 2, h / 2
+    dist = np.sqrt(((X - cx) / cx) ** 2 + ((Y - cy) / cy) ** 2)
+    strength = random.uniform(0.3, 0.7)
+    mask = np.clip(1.0 - dist * strength, 0.2, 1.0).astype(np.float32)
+    return np.clip(img_np.astype(np.float32) * mask[:, :, np.newaxis], 0, 255).astype(np.uint8)
+
+
+def _add_jpeg_artifacts(img_np: np.ndarray) -> np.ndarray:
+    """Re-encode at low JPEG quality to simulate webcam compression."""
+    quality = random.randint(40, 85)
+    _, buf = cv2.imencode('.jpg', img_np, [cv2.IMWRITE_JPEG_QUALITY, quality])
+    return cv2.imdecode(buf, cv2.IMREAD_COLOR)
+
+
+def _add_hand_occluder(bg_pil: Image.Image, card_box) -> Image.Image:
+    """Draw a skin-toned hand/finger strip along one edge of the card."""
+    x1, y1, x2, y2 = card_box
+    card_w, card_h = x2 - x1, y2 - y1
+    draw = ImageDraw.Draw(bg_pil)
+    # Skin tones: range from pale to darker brown
+    r = random.randint(150, 220)
+    g = random.randint(100, 170)
+    b = random.randint(70, 130)
+    edge = random.choice(['bottom', 'left', 'right'])
+    thickness = int(card_h * random.uniform(0.08, 0.22))
+    if edge == 'bottom':
+        draw.rectangle([x1, y2 - thickness, x2, y2], fill=(r, g, b))
+    elif edge == 'left':
+        draw.rectangle([x1, y1, x1 + thickness, y2], fill=(r, g, b))
+    else:
+        draw.rectangle([x2 - thickness, y1, x2, y2], fill=(r, g, b))
+    return bg_pil
+
+
+def _add_color_temp(img_np: np.ndarray) -> np.ndarray:
+    """Shift white balance warm or cool to simulate room lighting."""
+    img = img_np.astype(np.float32)
+    if random.random() < 0.5:  # warm
+        img[:, :, 2] = np.clip(img[:, :, 2] * random.uniform(1.05, 1.20), 0, 255)  # R (BGR)
+        img[:, :, 0] = np.clip(img[:, :, 0] * random.uniform(0.80, 0.95), 0, 255)  # B
+    else:  # cool
+        img[:, :, 0] = np.clip(img[:, :, 0] * random.uniform(1.05, 1.20), 0, 255)  # B
+        img[:, :, 2] = np.clip(img[:, :, 2] * random.uniform(0.80, 0.95), 0, 255)  # R
+    return img.astype(np.uint8)
+
+
 # ---------------------------------------------------------------------------
 # Core image generator
 # ---------------------------------------------------------------------------
@@ -255,7 +317,7 @@ def _generate_one(card_paths, img_w, img_h, bg_paths=None, card_back_paths=None)
         labels.append(f"{card_class} {cx:.6f} {cy:.6f} {bw:.6f} {bh:.6f}")
         placed.append((vx1, vy1, vx2, vy2))
 
-    # ---- Random occluder ----
+    # ---- Random dark occluder ----
     if placed and random.random() < OCCLUDER_PROB:
         bx1, by1, bx2, by2 = random.choice(placed)
         bw_b = bx2 - bx1
@@ -267,6 +329,10 @@ def _generate_one(card_paths, img_w, img_h, bg_paths=None, card_back_paths=None)
         draw = ImageDraw.Draw(bg_pil)
         fill = tuple(random.randint(0, 50) for _ in range(3))
         draw.rectangle([ox1, oy1, ox2, oy2], fill=fill)
+
+    # ---- Skin-toned hand occluder ----
+    if placed and random.random() < HAND_OCCLUDE_PROB:
+        bg_pil = _add_hand_occluder(bg_pil, random.choice(placed))
 
     # ---- Whole-image augmentations ----
     bg_pil = ImageEnhance.Brightness(bg_pil).enhance(random.uniform(0.55, 1.45))
@@ -288,7 +354,21 @@ def _generate_one(card_paths, img_w, img_h, bg_paths=None, card_back_paths=None)
         K     = cv2.warpAffine(K, rot_M, (ksize, ksize))
         bg_np = cv2.filter2D(bg_np, -1, K)
 
+    # Convert to BGR for cv2 operations below
     bgr = cv2.cvtColor(bg_np, cv2.COLOR_RGB2BGR)
+
+    if random.random() < DEFOCUS_PROB:
+        bgr = _add_defocus(bgr)
+
+    if random.random() < JPEG_PROB:
+        bgr = _add_jpeg_artifacts(bgr)
+
+    if random.random() < VIGNETTE_PROB:
+        bgr = _add_vignette(bgr)
+
+    if random.random() < COLOR_TEMP_PROB:
+        bgr = _add_color_temp(bgr)
+
     return bgr, labels
 
 
